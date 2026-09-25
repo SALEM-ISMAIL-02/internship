@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/elearning_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: ""
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+
+app:
+  jwt:
+    secret: "ChangeMe-ThisIsA256BitSecretKeyForJwtSigning-ChangeMe-0123456789"
+    expiration-ms: 86400000
+  upload-dir: ./uploads
+  ai:
+    # OpenRouter free-tier compatible OpenAI-style API
+    base-url: https://openrouter.ai/api/v1
+    api-key: ${AI_API_KEY:}
+    model: ${AI_MODEL:meta-llama/llama-3.2-3b-instruct:free}
+
+server:
+  port: 8080
