@@ -1,5 +1,6 @@
 package com.example.elearning.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,5 +25,6 @@ public class Question {
     private int correctAnswer; // index into options
 
     @ManyToOne(optional = false) @JoinColumn(name = "quiz_id")
+    @JsonIgnore
     private Quiz quiz;
 }

@@ -19,10 +19,10 @@ app:
     expiration-ms: 86400000
   upload-dir: ./uploads
   ai:
-    # OpenRouter free-tier compatible OpenAI-style API
-    base-url: https://openrouter.ai/api/v1
-    api-key: ${AI_API_KEY:}
-    model: ${AI_MODEL:meta-llama/llama-3.2-3b-instruct:free}
+    # Google Gemini via its OpenAI-compatible endpoint
+    base-url: https://generativelanguage.googleapis.com/v1beta/openai
+    api-key: ${AI_API_KEY:REDACTED}
+    model: ${AI_MODEL:gemini-flash-latest}
 
 server:
   port: 8080

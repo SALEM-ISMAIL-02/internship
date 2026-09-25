@@ -1,5 +1,6 @@
 package com.example.elearning.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,7 @@ public class Course {
     private Status status;
 
     @ManyToOne @JoinColumn(name = "instructor_id")
+    @JsonIgnore
     private User instructor;
 
     public enum Priority { LOW, MEDIUM, HIGH, MANDATORY }

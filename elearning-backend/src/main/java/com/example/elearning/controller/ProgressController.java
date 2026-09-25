@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,9 @@ public class ProgressController {
     @PostMapping("/quiz/{quizId}/submit")
     @PreAuthorize("hasRole('LEARNER')")
     public QuizResult submit(@PathVariable Long quizId, @RequestParam Long learnerId,
-                             @RequestBody Map<String, Integer> answers) {
+                             @RequestBody Map<String, Object> body) {
+        Map<Long, Integer> answers = new HashMap<>();
+        body.forEach((k, v) -> answers.put(Long.valueOf(k), ((Number) v).intValue()));
         return progressService.submitQuiz(learnerId, quizId, answers);
     }
 

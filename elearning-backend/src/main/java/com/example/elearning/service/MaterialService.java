@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.apache.poi.xslf.extractor.XSLFPowerPointExtractor;
+import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Value;
@@ -74,9 +74,15 @@ public class MaterialService {
     }
 
     private String extractPptx(Path path) throws IOException {
-        try (XSLFPowerPointExtractor extractor =
-                     new XSLFPowerPointExtractor(new org.apache.poi.xslf.usermodel.XMLSlideShow(Files.newInputStream(path)))) {
-            return extractor.getText();
+        try (XMLSlideShow ppt = new XMLSlideShow(Files.newInputStream(path))) {
+            StringBuilder sb = new StringBuilder();
+            ppt.getSlides().forEach(slide ->
+                slide.getShapes().forEach(shape -> {
+                    if (shape instanceof org.apache.poi.xslf.usermodel.XSLFTextShape ts) {
+                        sb.append(ts.getText()).append('\n');
+                    }
+                }));
+            return sb.toString();
         }
     }
 
