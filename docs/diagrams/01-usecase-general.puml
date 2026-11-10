@@ -1,0 +1,74 @@
+@startuml 01-usecase-general
+!theme plain
+title E-Learning Platform - System use cases
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+actor "Learner" as learner
+actor "Instructor" as instructor
+actor "Administrator" as admin
+actor "Gemini API" as gemini
+
+rectangle "E-Learning Platform" {
+  usecase "Register" as register
+  usecase "Log in" as login
+  usecase "Browse published courses" as browse
+  usecase "View course materials" as materials
+  usecase "Update course progress" as progress
+  usecase "Take published quiz" as take
+  usecase "Submit quiz answers" as submit
+  usecase "View quiz results" as results
+  usecase "Create and manage course" as manageCourse
+  usecase "Change course status" as status
+  usecase "Upload course material" as upload
+  usecase "Generate quiz draft from material" as generate
+  usecase "Review and edit quiz draft" as review
+  usecase "Publish / unpublish quiz" as publish
+  usecase "Duplicate quiz" as duplicate
+  usecase "Manage users" as users
+  usecase "Read audit log" as audit
+}
+
+learner --> register
+learner --> login
+learner --> browse
+learner --> materials
+learner --> progress
+learner --> take
+learner --> submit
+learner --> results
+instructor --> login
+instructor --> browse
+instructor --> manageCourse
+instructor --> status
+instructor --> upload
+instructor --> generate
+instructor --> review
+instructor --> publish
+instructor --> duplicate
+admin --> login
+admin --> browse
+admin --> manageCourse
+admin --> status
+admin --> users
+admin --> audit
+generate --> gemini
+
+note right of login
+  Public endpoints:
+  POST /api/auth/register
+  POST /api/auth/login
+
+  All other protected requests use
+  a stateless JWT filter.
+end note
+
+note bottom
+  Authorization implemented by SecurityConfig:
+  GET /api/courses/** is public.
+  Learner-only: /api/progress/** and GET /api/quizzes/*/take.
+  Instructor/Admin: /api/quizzes/**.
+  Admin: /api/users/** and /api/admin/**.
+end note
+@enduml

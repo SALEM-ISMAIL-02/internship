@@ -1,0 +1,44 @@
+@startuml 05a-class-ai
+!theme plain
+title Classes - AI client adapters and decorators
+skinparam shadowing false
+
+package "com.example.elearning.ai" {
+  interface AiChatClient {
+    + complete(prompt: String): String
+  }
+  class OpenAiCompatibleChatClient {
+    - baseUrl: String
+    - apiKey: String
+    - model: String
+    + complete(prompt: String): String
+  }
+  class AiClientFactory {
+    + create(): AiChatClient
+  }
+  class LoggingChatClient {
+    - delegate: AiChatClient
+    + complete(prompt: String): String
+  }
+  class RetryChatClient {
+    - delegate: AiChatClient
+    - maxAttempts: int
+    - retryDelayMs: long
+    + complete(prompt: String): String
+  }
+}
+
+AiChatClient <|.. OpenAiCompatibleChatClient
+AiChatClient <|.. LoggingChatClient
+AiChatClient <|.. RetryChatClient
+LoggingChatClient --> AiChatClient : delegates
+RetryChatClient --> AiChatClient : delegates
+AiClientFactory ..> OpenAiCompatibleChatClient : creates provider adapter
+AiClientFactory ..> LoggingChatClient : decorates
+AiClientFactory ..> RetryChatClient : decorates
+
+note bottom
+  The generator depends on AiChatClient, not on Gemini-specific code.
+  The concrete adapter calls Gemini's OpenAI-compatible /chat/completions endpoint.
+end note
+@enduml

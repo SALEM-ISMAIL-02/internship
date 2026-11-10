@@ -1,0 +1,41 @@
+@startuml 03-sequence-generate-quiz
+!theme plain
+title Sequence - Generate an AI quiz draft
+autonumber
+skinparam shadowing false
+skinparam sequence {
+ ActorBackgroundColor #F45B69
+ ActorBorderColor #333333
+ ParticipantBackgroundColor #70D6D0
+ ParticipantBorderColor #333333
+ ControlBackgroundColor #FFD23F
+ ControlBorderColor #333333
+ DatabaseBackgroundColor #86E28B
+ DatabaseBorderColor #333333
+ ArrowColor #333333
+ LifeLineBorderColor #555555
+}
+
+actor User as U
+participant "Angular Frontend" as FE
+control "QuizController" as QC
+database "MySQL Database" as DB
+participant "Gemini API" as API
+
+U -> FE : Select material and question count
+FE -> QC : POST /api/quizzes/generate
+QC -> DB : Read material and module data
+DB --> QC : Material metadata and source path
+QC -> API : Generate quiz from extracted text
+API --> QC : JSON question draft
+
+alt material missing or extraction fails
+ QC --> FE : Explicit 4xx error
+ FE --> U : Display generation error
+else valid source text
+ QC -> DB : Store unpublished quiz and questions
+ DB --> QC : Quiz draft
+ QC --> FE : 200 JSON draft
+ FE --> U : Display editable questions
+end
+@enduml

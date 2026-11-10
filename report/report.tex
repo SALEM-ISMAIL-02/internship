@@ -1,0 +1,187 @@
+﻿\documentclass[12pt,a4paper,openright]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{ragged2e}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{lastpage}
+\setlength{\emergencystretch}{3em}
+\geometry{top=2.5cm,bottom=2.5cm,left=2.8cm,right=2.3cm,headheight=15pt}
+\definecolor{navy}{HTML}{14213D}
+\definecolor{blue}{HTML}{3457D5}
+\definecolor{teal}{HTML}{14805E}
+\definecolor{lightblue}{HTML}{E8F0F9}
+\definecolor{lightgray}{HTML}{F3F6FA}
+\definecolor{midgray}{HTML}{66758A}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=blue,citecolor=teal,
+  pdftitle={Design and Implementation of Safyron Learning},
+  pdfauthor={Internship report}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{midgray}{Safyron Learning}}
+\fancyhead[R]{\small\textcolor{midgray}{Internship Report}}
+\fancyfoot[C]{\small\thepage\ /\ \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.2pt}
+\titleformat{\chapter}[display]{\normalfont\bfseries\color{navy}}
+  {\filleft\Large\chaptertitlename\ \thechapter}{1ex}
+  {\titlerule\vspace{1ex}\Huge}[\vspace{1ex}\titlerule]
+\titleformat{\section}{\Large\bfseries\color{navy}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\large\bfseries\color{blue}}{\thesubsection}{0.8em}{}
+\captionsetup{font=small,labelfont=bf,justification=centering}
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=4pt}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{lightgray},
+  frame=single,rulecolor=\color{lightblue},breaklines=true,
+  columns=fullflexible,keepspaces=true,showstringspaces=false}
+\newcommand{\projectname}{Safyron Learning}
+\newcommand{\img}[3][0.88\textwidth]{\begin{figure}[H]\centering
+  \includegraphics[width=#1,height=0.62\textheight,keepaspectratio]{#2}
+  \caption{#3}\end{figure}}
+\newcommand{\codepath}[1]{\texttt{\small #1}}
+\begin{document}
+\begin{titlepage}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[navy] (current page.north west) rectangle ([yshift=-1.05cm]current page.north east);
+  \fill[blue] ([yshift=-1.05cm]current page.north west) rectangle ([yshift=-1.22cm]current page.north east);
+\end{tikzpicture}
+\vspace*{1.45cm}
+\begin{center}
+\includegraphics[width=0.48\textwidth]{../elearning-frontend/public/Logo.png}\\[0.35cm]
+{\color{navy}\Large\bfseries SAFYRON ENGINEERING}\\[1.15cm]
+{\color{navy}\rule{0.82\textwidth}{0.8pt}}\\[0.55cm]
+{\color{navy}\Huge\bfseries Design and Implementation of a\\[0.15cm]
+Intelligent E-Learning Platform}\\[0.5cm]
+{\color{blue}\Large\bfseries AI-Assisted Quiz Generation and Instructor Validation}\\[1.25cm]
+\begin{tabular}{>{\bfseries}rl}
+Nature & One-month professional internship report\\
+Field of study & Software engineering\\
+Student & Ismail SALEM\\
+Host organization & SAFYRON ENGINEERING\\
+Professional supervisor & Ashref Ammar\\
+Academic supervisor & EPI Digital School\\
+Academic year & 2026--2027
+\end{tabular}\\[1.35cm]
+\fcolorbox{blue}{lightblue}{\parbox{0.76\textwidth}{\centering
+\small\textcolor{navy}{Angular / Spring Boot / MySQL platform for compliance
+training, learning progress, controlled assessment, and certification.}}}\\[1.6cm]
+{\large\textcolor{midgray}{Report version: \today}}
+\end{center}
+\end{titlepage}
+\pagenumbering{roman}
+\chapter*{Acknowledgements}\addcontentsline{toc}{chapter}{Acknowledgements}
+\begin{center}
+\vspace*{0.65cm}
+\begin{minipage}{0.82\textwidth}
+\sffamily
+\large
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.05em}
+\setlength{\baselineskip}{1.35\baselineskip}
+\justifying
+I would like to express my sincere gratitude to \textbf{Mr. Ammar Achraf}
+for his warm welcome, constant availability, professional guidance, and the
+trust he placed in me throughout this internship. His support enabled me to
+gain a deeper understanding of the company’s environment and helped me
+approach my work in a structured and organized manner.
+
+I would also like to thank \textbf{SAFYRON ENGINEERING} for providing me
+with the opportunity to discover its professional environment and gain
+valuable insight into the challenges related to the processing and monitoring
+of technical requests.
+
+Finally, I would like to extend my appreciation to
+\textbf{EPI Digital School of Sousse} for the software engineering education
+and the academic framework provided for this professional internship. This
+experience allowed me to put my acquired knowledge into practice and carry out
+a complete development process, from requirements analysis to the validation
+of the proposed solution.
+\end{minipage}
+\end{center}
+
+\chapter*{Abstract}\addcontentsline{toc}{chapter}{Abstract}
+This report presents the design and implementation of \projectname{}, a web
+learning platform for organizing training modules, teaching materials and
+multiple-choice assessments. The project was completed during a one-month
+professional internship. Its central objective was to provide a controlled
+workflow from module publication to instructor approval of a learner's
+assessment.
+
+The solution combines Angular 21, Spring Boot 3.3, MySQL persistence,
+document extraction strategies and Google's OpenAI-compatible Gemini API for
+AI-assisted quiz generation. Instructors can create a quiz manually or
+generate a draft from uploaded material, review and publish it, then inspect
+the learner's answers question by question. A quiz is submitted only once and
+the final certification state depends on instructor approval. JWT-based
+authentication is integrated in the application security design and is
+available as the authentication layer for the deployed project.
+
+The report explains the context, requirements, architecture, data model,
+implementation choices and validation process. It also discusses deletion
+consistency, Swagger testing, user experience, limitations and future
+improvements.
+
+\noindent\textbf{Keywords:} e-learning; Angular; Spring Boot; MySQL; quiz;
+artificial intelligence; JWT; document extraction; instructor approval.
+
+\tableofcontents
+\listoffigures
+\listoftables
+\chapter*{List of Acronyms}\addcontentsline{toc}{chapter}{List of Acronyms}
+\small
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.18\textwidth}X}
+API & Application Programming Interface\\
+CRUD & Create, Read, Update, Delete\\
+CORS & Cross-Origin Resource Sharing\\
+DIP & Dependency Inversion Principle\\
+DTO & Data Transfer Object\\
+E2E & End-to-End\\
+HTTP & HyperText Transfer Protocol\\
+IA & Artificial Intelligence\\
+JPA & Jakarta Persistence API\\
+JSON & JavaScript Object Notation\\
+JWT & JSON Web Token\\
+LMS & Learning Management System\\
+MCQ & Multiple Choice Question\\
+RBAC & Role-Based Access Control\\
+REST & Representational State Transfer\\
+SRP & Single Responsibility Principle\\
+SPA & Single Page Application\\
+SQL & Structured Query Language\\
+UML & Unified Modeling Language
+\end{tabularx}
+\pagenumbering{arabic}
+\chapter*{General Introduction}\addcontentsline{toc}{chapter}{General Introduction}
+\input{chapters/introduction/introduction}
+\input{chapters/chapter1/chapter1}
+\input{chapters/chapter2/chapter2}
+\input{chapters/chapter3/chapter3}
+\chapter*{General Conclusion and Future Directions}
+\addcontentsline{toc}{chapter}{General Conclusion and Future Directions}
+\input{chapters/conclusion/conclusion}
+\chapter*{References and Webography}
+\addcontentsline{toc}{chapter}{References and Webography}
+\input{chapters/references/references}
+\appendix
+\chapter{Project Structure and Reproduction}
+\input{chapters/appendix/appendix}
+\end{document}

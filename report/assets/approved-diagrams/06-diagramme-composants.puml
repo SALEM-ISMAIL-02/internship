@@ -1,0 +1,74 @@
+@startuml 06-diagramme-composants
+!theme plain
+title Safyron Learning Platform
+skinparam componentStyle uml2
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam linetype ortho
+left to right direction
+
+skinparam component {
+  BackgroundColor #F7F7F7
+  BorderColor #777777
+}
+skinparam package {
+  BackgroundColor #F7F7F7
+  BorderColor #555555
+}
+
+package "Safyron Learning Platform" as Platform {
+  component "Angular SPA" as Angular
+
+  package "Spring Boot -- modular monolith" as Backend {
+    component "Security" as Security
+    component "Identity / Administration" as Identity
+    component "Course Management" as Course
+    component "Material Management" as Material
+    component "Quiz Management" as Quiz
+    component "Learner Progress" as Progress
+    component "AI Generation Adapter" as AI
+
+    interface "API Authentication" as IAuth
+    interface "API Administration" as IAdmin
+    interface "API Courses / Materials / Quizzes" as IContent
+    interface "Persistence via JPA / Hibernate" as IPersistence
+    interface "API Gemini" as IGemini
+
+    Security - IAuth
+    Identity - IAdmin
+    Course - IContent
+    Material - IContent
+    Quiz - IContent
+    Progress - IContent
+    Identity - IPersistence
+    Course - IPersistence
+    Material - IPersistence
+    Quiz - IPersistence
+    Progress - IPersistence
+    AI - IPersistence
+
+    Security ..> Identity : identity service
+    Course ..> Material
+    Course ..> Quiz
+    Quiz ..> Progress
+    Quiz ..> AI
+  }
+
+  database "MySQL" as DB
+  folder "Local upload directory\n./uploads" as Uploads
+
+  Angular ..> IAuth
+  Angular ..> IAdmin
+  Angular ..> IContent
+  IPersistence ..> DB
+  Material ..> Uploads : store / read files
+}
+
+cloud "Gemini API\n<<External System>>" as Gemini
+IGemini ..> Gemini : HTTPS / JSON
+
+note bottom of Platform
+  Angular consumes REST/JSON interfaces exposed by the Spring Boot monolith.
+  Persistence is performed by application services and JPA repositories.
+end note
+@enduml

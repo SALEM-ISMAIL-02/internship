@@ -1,0 +1,48 @@
+@startuml 04-sequence-auth
+!theme plain
+title Sequence - User authentication request
+autonumber
+skinparam shadowing false
+skinparam sequence {
+  ActorBackgroundColor #F45B69
+  ActorBorderColor #333333
+  ParticipantBackgroundColor #70D6D0
+  ParticipantBorderColor #333333
+  ControlBackgroundColor #FFD23F
+  ControlBorderColor #333333
+  DatabaseBackgroundColor #86E28B
+  DatabaseBorderColor #333333
+  ArrowColor #333333
+  LifeLineBorderColor #555555
+}
+
+actor User as U
+participant "Angular Frontend" as FE
+control "AuthController" as C
+database "MySQL Database" as DB
+participant "Authentication API" as API
+
+U -> FE : Enter credentials
+FE -> C : POST /api/auth/login
+C -> DB : Read user by email
+DB --> C : User record or empty
+C -> API : Validate credentials and create token
+API --> C : JWT and user profile
+C --> FE : 200 response or explicit error
+FE --> U : Navigate by role or display error
+
+== Authenticated request ==
+U -> FE : Open protected dashboard
+FE -> C : GET /api/... + bearer token
+C -> API : Validate token and role
+API --> C : Authorized request
+C -> DB : Read protected resource
+DB --> C : Resource data
+C --> FE : Protected response
+FE --> U : Display dashboard
+
+alt invalid credentials or token
+  C --> FE : 401/403 error
+  FE --> U : Display authentication error
+end
+@enduml

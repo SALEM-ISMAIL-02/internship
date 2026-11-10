@@ -1,0 +1,155 @@
+\chapter{Project Context and Scope}
+\section*{Introduction}
+This chapter presents the host organization, the internship framework, the
+existing training context and the scope selected for the project. It explains
+why Safyron Learning is relevant to the activities of Safyron Engineering and
+how the one-month work was organized.
+
+\section{Host Organization and Internship Framework}
+The professional internship took place from 1 to 31 August 2026 at
+\textbf{Safyron Engineering}, located in Rue Lac Toba, Les Berges du Lac,
+Tunis. The company operates in the field of industrial technical studies,
+including fire protection, hazard studies and industrial risk analysis. These
+activities require accurate technical documentation and continuous professional
+training.
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.36\textwidth]{../elearning-frontend/public/Logo.png}
+\caption{Safyron Engineering visual identity}
+\label{fig:safyron-logo}
+\end{figure}
+
+The internship was completed as part of the fifth year of the software
+engineering program at EPI Digital School Sousse. The work was carried out
+individually and supervised professionally by Mr Ammar Achraf, founder of
+Safyron Engineering. The company context made it possible to connect software
+engineering practices with the operational need for reliable safety and
+compliance training.
+
+\section{Project overview}
+\projectname{} is a compliance-oriented learning management platform developed
+as a full-stack web application. Its visual identity is based on Safyron
+Engineering and its functional vocabulary reflects industrial training:
+mandatory modules, published resources, assessment attempts, audit records and
+instructor approval.
+
+The project combines a responsive Angular single-page application with a
+Spring Boot REST backend. MySQL stores users, modules, materials, quizzes,
+questions, learner progress and quiz results. Uploaded PDF, DOCX and PPTX
+documents are retained as learning resources and can also provide the source
+text for quiz generation.
+
+\section{Initial problem}
+Safyron Engineering's technical activities depend on documents, procedures and
+regulatory knowledge that must remain available to employees. Before the
+platform, training material, quiz preparation and evidence of completion could
+be handled as separate activities. This separation made it difficult to know
+which version of a module was current, whether a learner had completed the
+assessment and whether the result had been reviewed by a responsible
+instructor.
+
+The project therefore models the training process as a complete lifecycle:
+material is attached to a module, an assessment is prepared, the module is
+published, the learner submits answers once, and the instructor records the
+final decision. The administrator receives a transverse view for governance
+and data maintenance.
+
+Traditional training workflows often separate the content repository,
+questionnaire authoring and evidence of completion. This creates several
+problems:
+\begin{itemize}
+\item learners cannot easily identify the current published material;
+\item instructors spend significant time rewriting questions from documents;
+\item a score alone does not provide enough evidence for approval;
+\item repeated attempts can invalidate the meaning of an assessment;
+\item deleting a module or user can fail because of relational dependencies.
+\end{itemize}
+
+The project question was therefore: \emph{how can a web platform connect
+learning resources, AI-assisted assessment and instructor validation while
+preserving data consistency?}
+
+\section{Stakeholders}
+\subsection{Learner}
+The learner browses published modules, opens or downloads files, takes an
+available quiz and sees the submission state. The score is not exposed as a
+learner-facing decision; certification is controlled by the instructor.
+
+\subsection{Instructor}
+The instructor creates and manages modules, imports source material, produces
+AI-generated or manual quizzes, publishes assessments and reviews detailed
+answers. Approval can be removed if it was granted accidentally.
+
+\subsection{Administrator}
+The administrator manages users, modules, quizzes and operational statistics.
+The dashboard groups submissions by module and provides a global governance
+view.
+
+\section{Scope and objectives}
+\begin{table}[H]\centering
+\caption{Project objectives}\label{tab:objectives}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.28\textwidth}X}
+\toprule Objective & Expected result\\\midrule
+Module management & Create, publish, update and delete modules with dependencies.\\
+Learning resources & Upload, preview, open and download training files.\\
+Assessment & Generate quizzes with AI or create them manually.\\
+Controlled attempt & Store one submission per learner and quiz.\\
+Human validation & Display detailed answers and support approval or reversal.\\
+Administration & Manage users, modules and grouped submission indicators.\\
+Quality & Validate the API through tests, builds and Swagger.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Planning}
+The month was divided into four iterations. The first week focused on
+requirements, architecture and the existing codebase. The second covered
+modules, files and learner navigation. The third implemented quiz generation,
+manual authoring, one-time submission and review. The fourth concentrated on
+administration, deletion consistency, Swagger, interface improvements and
+end-to-end validation.
+
+\begin{table}[H]
+\centering
+\caption{Simplified Gantt diagram -- provisional internship planning}
+\label{tab:gantt-planning}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}p{0.58\textwidth}*{4}{>{\centering\arraybackslash}p{0.085\textwidth}}@{}}
+\toprule
+\textbf{Proposed activity}
+  & \textbf{\shortstack{S1\\[-2pt]\footnotesize 01--07}}
+  & \textbf{\shortstack{S2\\[-2pt]\footnotesize 08--14}}
+  & \textbf{\shortstack{S3\\[-2pt]\footnotesize 15--21}}
+  & \textbf{\shortstack{S4\\[-2pt]\footnotesize 22--31}}\\
+\midrule
+Understanding the organisational context
+  & \rule{0.34cm}{0.34cm} & & & \\
+Requirements analysis and scope definition
+  & \rule{0.34cm}{0.34cm} & & & \\
+Functional analysis and UML modelling
+  & & \rule{0.34cm}{0.34cm} & & \\
+Architecture and data-model design
+  & & \rule{0.34cm}{0.34cm} & & \\
+Backend implementation
+  & & & \rule{0.34cm}{0.34cm} & \\
+Progressive integration and finalisation
+  & & & \rule{0.34cm}{0.34cm} & \rule{0.34cm}{0.34cm} \\
+Testing and validation
+  & & & & \rule{0.34cm}{0.34cm} \\
+AI integration and final corrections
+  & & & & \rule{0.34cm}{0.34cm} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Project boundaries}
+The project does not attempt to provide payments, video conferencing,
+multi-tenant billing or a complete certificate document generator. These
+features are suitable future extensions. The internship focused on a reliable
+learning and assessment core.
+
+\section*{Conclusion}
+The company context justifies a platform focused on traceable learning and
+controlled assessment rather than a generic document repository. The next
+chapter translates this context into functional and non-functional
+requirements, architecture decisions and a persistent data model.

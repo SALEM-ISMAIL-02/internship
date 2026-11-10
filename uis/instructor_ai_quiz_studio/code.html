@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Safyron // Instructor Studio</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary": "#1f3247",
+            "on-surface-variant": "#c4c6cd",
+            "outline-variant": "#44474d",
+            "on-tertiary-fixed": "#002113",
+            "on-primary-fixed": "#071d31",
+            "on-error-container": "#ffdad6",
+            "on-secondary": "#5a1c00",
+            "surface-variant": "#273647",
+            "on-tertiary": "#003824",
+            "secondary-container": "#f66018",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-secondary-fixed-variant": "#7f2b00",
+            "surface-bright": "#2c3a4c",
+            "on-surface": "#d4e4fa",
+            "secondary-fixed-dim": "#ffb599",
+            "surface-tint": "#b5c8e4",
+            "on-primary-container": "#788ba4",
+            "surface-container": "#122131",
+            "inverse-surface": "#d4e4fa",
+            "primary-container": "#0f2338",
+            "surface-container-lowest": "#010f1f",
+            "surface-container-low": "#0d1c2d",
+            "primary": "#b5c8e4",
+            "on-secondary-fixed": "#370e00",
+            "primary-fixed-dim": "#b5c8e4",
+            "surface": "#051424",
+            "outline": "#8e9197",
+            "tertiary-container": "#002819",
+            "on-tertiary-container": "#009d6c",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-secondary-container": "#4f1700",
+            "tertiary": "#4edea3",
+            "tertiary-fixed": "#6ffbbe",
+            "error-container": "#93000a",
+            "inverse-on-surface": "#233143",
+            "primary-fixed": "#d2e4ff",
+            "surface-container-highest": "#273647",
+            "error": "#ffb4ab",
+            "background": "#051424",
+            "surface-container-high": "#1c2b3c",
+            "on-error": "#690005",
+            "inverse-primary": "#4d6078",
+            "secondary-fixed": "#ffdbce",
+            "on-primary-fixed-variant": "#36485f",
+            "on-background": "#d4e4fa",
+            "secondary": "#ffb599",
+            "surface-dim": "#051424"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "gutter-mobile": "1rem",
+            "margin": "2rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"],
+            "label-md": ["JetBrains Mono"],
+            "headline-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "label-sm": ["JetBrains Mono"],
+            "body-md": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-lg": ["JetBrains Mono"],
+            "body-sm": ["Inter"],
+            "headline-xl-mobile": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .tactile-bevel {
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    .hazard-stripe {
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(246, 96, 24, 0.15),
+        rgba(246, 96, 24, 0.15) 8px,
+        rgba(15, 35, 56, 0.4) 8px,
+        rgba(15, 35, 56, 0.4) 16px
+      );
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md min-h-screen flex flex-col pb-36">
+<!-- TOP APP BAR -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter-mobile h-14 bg-surface-container-low border-b border-outline-variant shadow-sm tactile-bevel">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close up portrait photo of a field safety engineer wearing a reflective industrial hardhat and safety glasses in a dark high-tech control center, dramatic cool blue key lighting with warm amber rim highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVdeezQSyVU1cYkSgE2hn6_sLTyAFnBAVlhaU4xaHDhGC_cbKyLJ3pma3JEdv_QeywsDj5wLak3LUZFCo-V28mqbNrpJv0_A41qv6Uihz7uxQNiY9uirn7zW0KLKPek1CHewcZ1ZOhQfEJOxdWZyoFFmkPBkGLkbxR-kfx72oCzKf0faDcGyp5yl02lzYWbJd-m6s_fZSfeHrVNGFYJu3sIeVlftZ41-7aEVunR0esUYW0otZA-HEE"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md uppercase tracking-wider text-primary font-bold">SAFYRON // INSTRUCTOR STUDIO</span>
+<span class="font-label-sm text-[9px] text-tertiary tracking-widest flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse inline-block"></span>
+          SYS-NODE: LIVE TELEMETRY
+        </span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 bg-primary-container px-2 py-1 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-secondary-container text-[16px]" data-icon="badge">badge</span>
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-tight">Sr. Safety Eng</span>
+</div>
+</header>
+<!-- MAIN SCROLLABLE CONTENT -->
+<main class="w-full max-w-md mx-auto pt-16 px-gutter-mobile flex flex-col gap-4">
+<!-- OSHA HAZARD COMPLIANCE BANNER -->
+<div class="w-full bg-surface-container-low border border-secondary-container/40 rounded-lg overflow-hidden tactile-bevel mt-2">
+<div class="hazard-stripe h-1.5 w-full border-b border-secondary-container/30"></div>
+<div class="p-3 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary-container text-headline-sm" data-icon="warning">warning</span>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary-container font-bold tracking-wider">REGULATORY PROTOCOL ACTIVE</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-label-md">OSHA 1910.119</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 leading-snug">
+            All AI-synthesized quiz nodes must be verified against current facility P&amp;ID schematics before certification issuance.
+          </p>
+</div>
+</div>
+</div>
+<!-- COURSE CREATION SELECTOR & STATUS -->
+<section class="bg-primary-container border border-outline-variant rounded-lg p-3.5 tactile-bevel">
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">COURSE CONTEXT SPEC</span>
+<span class="font-label-sm text-[10px] px-2 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-secondary font-bold">
+          [MOD-08 // EVAL]
+        </span>
+</div>
+<div class="mt-3">
+<label class="font-label-sm text-label-sm text-primary block mb-1">Target Curriculum Unit</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded px-3 py-2 text-on-surface font-body-md text-body-md focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none transition-colors appearance-none pr-8">
+<option selected="">Industrial Risk Assessment &amp; HAZOP</option>
+<option>Electrical Safety Lockout/Tagout (LOTO)</option>
+<option>Confined Space Entry &amp; Atmospheric Monitoring</option>
+<option>Combustible Dust Hazard Mitigation</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-on-surface-variant pointer-events-none text-[18px]" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between bg-surface-container-low p-2 rounded border border-outline-variant/50">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Lifecycle Stage:</span>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#78350F] border border-[#F59E0B]/60">
+<span class="w-1.5 h-1.5 rounded-full bg-[#FEF3C7] animate-ping"></span>
+<span class="font-label-sm text-[10px] text-[#FEF3C7] font-bold uppercase">Draft - Preparing Assessment</span>
+</div>
+</div>
+</section>
+<!-- SOURCE DOCUMENT SELECTOR CARD -->
+<section class="bg-surface-container border border-outline-variant rounded-lg p-3.5 tactile-bevel">
+<div class="flex items-center justify-between mb-2.5">
+<span class="font-label-sm text-label-sm text-primary font-bold uppercase tracking-wider flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary" data-icon="folder_supervised">folder_supervised</span>
+          Source Document Intake
+        </span>
+<span class="font-label-sm text-[10px] text-tertiary bg-tertiary-container px-2 py-0.5 rounded border border-tertiary/40">
+          [✓] PARSED
+        </span>
+</div>
+<!-- File Details Pill -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2.5 rounded-lg flex items-start gap-2.5">
+<div class="p-2 rounded bg-surface-container-highest border border-outline-variant text-secondary-container flex-shrink-0">
+<span class="material-symbols-outlined text-headline-sm" data-icon="picture_as_pdf">picture_as_pdf</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="font-label-md text-label-md text-on-surface font-semibold truncate">
+            Risk_Assessment_Methodology_v4.pdf
+          </div>
+<div class="font-label-sm text-[10px] text-on-surface-variant mt-0.5">
+            48 pages extracted • SHA-256: 4e9a...712
+          </div>
+<div class="mt-2 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-tertiary" data-icon="psychology">psychology</span>
+<span class="font-label-sm text-[10px] text-tertiary font-bold tracking-tight">AI Extract &amp; Synthesize:</span>
+<span class="font-label-sm text-[10px] text-on-surface bg-surface-container-high px-1.5 py-0.5 rounded border border-outline-variant">
+              14 Key Safety Concepts
+            </span>
+</div>
+</div>
+</div>
+<!-- Quick Concept Tags -->
+<div class="mt-3 flex flex-wrap gap-1.5">
+<span class="font-label-sm text-[10px] text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded border border-outline-variant/60">Guide Words</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded border border-outline-variant/60">Node Boundaries</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded border border-outline-variant/60">Process Safeguards</span>
+<span class="font-label-sm text-[10px] text-secondary bg-surface-container-low px-2 py-0.5 rounded border border-secondary-container/40">+11 more</span>
+</div>
+</section>
+<!-- PRIMARY ACTION: AI QUIZ GENERATION -->
+<section class="bg-primary-container border border-secondary-container/30 rounded-lg p-3 tactile-bevel shadow-lg">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm mb-2">
+<span class="text-secondary font-bold uppercase">AI GENERATOR CONTROLS</span>
+<span class="text-on-surface-variant font-label-md text-[10px]">ENGINE: SAFY-CORE-v2</span>
+</div>
+<!-- Config Grid -->
+<div class="grid grid-cols-2 gap-2 mb-3">
+<div class="bg-surface-container-lowest p-2 rounded border border-outline-variant">
+<span class="font-label-sm text-[10px] text-on-surface-variant block uppercase">Question Volume</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">5 Questions</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded border border-outline-variant">
+<span class="font-label-sm text-[10px] text-on-surface-variant block uppercase">Heuristic Target</span>
+<span class="font-label-md text-label-md text-tertiary font-bold truncate block">Node Deviation</span>
+</div>
+</div>
+<div class="text-[11px] font-label-sm text-on-surface-variant mb-3 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary-container" data-icon="tune">tune</span>
+<span>Focus: HAZOP Guide Words &amp; Node Deviation</span>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full bg-secondary-container hover:bg-[#F97316] text-white py-3 px-4 rounded-lg font-label-md text-label-md uppercase tracking-wider font-bold flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-all border border-secondary/40">
+<span class="material-symbols-outlined text-[20px]" data-icon="bolt">bolt</span>
+        Generate Assessment with AI
+      </button>
+</section>
+<!-- SECTION TITLE: QUESTION REVIEW -->
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container text-headline-sm" data-icon="quiz">quiz</span>
+<h2 class="font-headline-sm text-headline-sm text-primary uppercase font-bold tracking-tight">Review Generated Nodes</h2>
+</div>
+<span class="font-label-sm text-[11px] bg-surface-container-high text-on-surface px-2 py-0.5 rounded border border-outline-variant">
+        NODE 01 / 05
+      </span>
+</div>
+<!-- AI GENERATED QUESTION REVIEW CARD 1 -->
+<article class="bg-primary-container border border-outline-variant rounded-lg overflow-hidden tactile-bevel shadow-sm">
+<!-- Card Header Strip -->
+<div class="bg-surface-container-low px-3.5 py-2.5 border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-primary font-bold">Question 1 (AI Generated)</span>
+<span class="font-label-sm text-[10px] px-1.5 py-0.5 rounded bg-error-container text-error font-bold uppercase border border-error/30">
+            Critical
+          </span>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Edit Question">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container-highest text-on-surface-variant hover:text-error transition-colors" title="Delete Question">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="p-3.5 flex flex-col gap-3">
+<!-- Question Stem Input Field -->
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant block mb-1 uppercase tracking-wider">Question Stem (Editable)</label>
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded p-2.5 text-on-surface font-body-md text-body-md focus:border-secondary-container focus:ring-1 focus:ring-secondary-container outline-none transition-colors resize-none leading-snug" rows="2">What is the primary objective of a HAZOP node deviation analysis?</textarea>
+<span class="absolute right-2 bottom-2 font-label-sm text-[9px] text-on-surface-variant font-label-md">CHAR: 64</span>
+</div>
+</div>
+<!-- Options Container -->
+<div class="flex flex-col gap-2">
+<span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider">Response Matrix &amp; Key Identification</span>
+<!-- Option A -->
+<div class="flex items-start gap-2 p-2 rounded bg-surface-container-lowest border border-outline-variant/60 hover:border-outline-variant transition-colors">
+<span class="w-6 h-6 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center font-label-sm text-label-sm text-on-surface-variant font-bold flex-shrink-0">
+              A
+            </span>
+<div class="flex-1 font-body-sm text-body-sm text-on-surface-variant pt-0.5">
+              Verify vendor pump pricing
+            </div>
+<span class="font-label-sm text-[10px] text-outline pt-0.5">Distractor</span>
+</div>
+<!-- Option B (Correct Answer Highlighted) -->
+<div class="flex items-start gap-2 p-2.5 rounded bg-tertiary-container/60 border border-tertiary/70 shadow-sm relative">
+<span class="w-6 h-6 rounded bg-tertiary text-on-tertiary flex items-center justify-center font-label-sm text-label-sm font-bold flex-shrink-0">
+              B
+            </span>
+<div class="flex-1">
+<div class="font-body-sm text-body-sm text-on-surface font-semibold leading-snug">
+                Systematically identify hazards and operability deviations from design intent
+              </div>
+<div class="mt-1 flex items-center gap-1.5">
+<span class="font-label-sm text-[10px] px-1.5 py-0.5 rounded bg-[#064E3B] text-[#34D399] border border-[#10B981] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="check_circle">check_circle</span>
+                  Correct Key
+                </span>
+<span class="font-label-sm text-[10px] text-tertiary">Probability Score: 0.994</span>
+</div>
+</div>
+</div>
+<!-- Option C -->
+<div class="flex items-start gap-2 p-2 rounded bg-surface-container-lowest border border-outline-variant/60 hover:border-outline-variant transition-colors">
+<span class="w-6 h-6 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center font-label-sm text-label-sm text-on-surface-variant font-bold flex-shrink-0">
+              C
+            </span>
+<div class="flex-1 font-body-sm text-body-sm text-on-surface-variant pt-0.5">
+              Calculate annual electricity consumption
+            </div>
+<span class="font-label-sm text-[10px] text-outline pt-0.5">Distractor</span>
+</div>
+<!-- Option D -->
+<div class="flex items-start gap-2 p-2 rounded bg-surface-container-lowest border border-outline-variant/60 hover:border-outline-variant transition-colors">
+<span class="w-6 h-6 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center font-label-sm text-label-sm text-on-surface-variant font-bold flex-shrink-0">
+              D
+            </span>
+<div class="flex-1 font-body-sm text-body-sm text-on-surface-variant pt-0.5">
+              Replace physical relief valves with digital displays
+            </div>
+<span class="font-label-sm text-[10px] text-outline pt-0.5">Distractor</span>
+</div>
+</div>
+<!-- Explanation Callout -->
+<div class="bg-surface-container-high border-l-2 border-secondary-container p-2.5 rounded-r">
+<div class="flex items-center gap-1 text-secondary-container font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[16px]" data-icon="verified">verified</span>
+<span>RATIONALE &amp; AUDIT TRAIL</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-snug">
+            ISO 12100 &amp; OSHA 1910.119 compliance requirement. Node deviation establishes whether process flows, pressure, or temperature diverge from operational safe baselines.
+          </p>
+</div>
+</div>
+</article>
+<!-- ADD QUESTION MANUALLY BUTTON -->
+<button class="w-full py-3 px-4 rounded-lg bg-surface-container-high hover:bg-surface-container-highest border border-dashed border-outline hover:border-primary text-primary font-label-md text-label-md uppercase tracking-wider font-semibold flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_circle">add_circle</span>
+      + Add Custom Question
+    </button>
+<!-- COMPLIANCE AUDIT TELEMETRY READOUT -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-3 text-[11px] font-label-sm text-on-surface-variant">
+<div class="flex justify-between items-center mb-1">
+<span>SESSION HASH:</span>
+<span class="text-primary font-label-md">0x8892-F9C</span>
+</div>
+<div class="flex justify-between items-center mb-1">
+<span>INSTRUCTOR CERT ID:</span>
+<span class="text-tertiary font-label-md">ENG-9021-ACTIVE</span>
+</div>
+<div class="flex justify-between items-center">
+<span>AI MODEL INTEGRITY:</span>
+<span class="text-secondary font-label-md">HAZOP-STD-SEC-1</span>
+</div>
+</div>
+</main>
+<!-- BOTTOM STICKY ACTION BAR (Save Draft / Validate & Publish) -->
+<div class="fixed bottom-14 left-0 w-full z-40 bg-surface-container-low/95 backdrop-blur border-t border-outline-variant px-gutter-mobile py-2.5 shadow-lg">
+<div class="max-w-md mx-auto flex items-center gap-2.5">
+<button class="flex-1 bg-surface-container-highest hover:bg-surface-variant border border-outline-variant text-on-surface py-2.5 px-3 rounded font-label-md text-label-md uppercase tracking-wider font-semibold active:scale-[0.98] transition-all flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="save">save</span>
+        Save Draft
+      </button>
+<button class="flex-1 bg-secondary-container hover:bg-[#F97316] text-white py-2.5 px-3 rounded font-label-md text-label-md uppercase tracking-wider font-bold active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(246,96,24,0.45)] border border-secondary">
+<span class="material-symbols-outlined text-[18px]" data-icon="fact_check">fact_check</span>
+        Validate &amp; Publish
+      </button>
+</div>
+</div>
+<!-- BOTTOM NAVIGATION BAR (Shared Component from JSON) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter-mobile py-2 bg-surface-container-lowest border-t border-outline-variant pb-safe shadow-lg">
+<!-- Item 1: Catalog -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1 hover:bg-surface-container-high hover:text-on-surface active:scale-[0.97] transition-all duration-150" href="#catalog">
+<span class="material-symbols-outlined text-[20px]" data-icon="menu_book">menu_book</span>
+<span class="font-label-sm text-label-sm">Catalog</span>
+</a>
+<!-- Item 2: My Safety -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1 hover:bg-surface-container-high hover:text-on-surface active:scale-[0.97] transition-all duration-150" href="#safety">
+<span class="material-symbols-outlined text-[20px]" data-icon="verified_user">verified_user</span>
+<span class="font-label-sm text-label-sm">My Safety</span>
+</a>
+<!-- Item 3: Assess -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1 hover:bg-surface-container-high hover:text-on-surface active:scale-[0.97] transition-all duration-150" href="#assess">
+<span class="material-symbols-outlined text-[20px]" data-icon="assignment">assignment</span>
+<span class="font-label-sm text-label-sm">Assess</span>
+</a>
+<!-- Item 4: Trainer (ACTIVE DESTINATION) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-surface rounded-lg px-2 py-1 border border-outline-variant hover:bg-surface-container-high hover:text-on-surface active:scale-[0.97] transition-all duration-150" href="#trainer">
+<span class="material-symbols-outlined text-[20px] text-tertiary" data-icon="psychology" data-weight="fill" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<span class="font-label-sm text-label-sm font-bold text-tertiary">Trainer</span>
+</a>
+<!-- Item 5: Admin -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1 hover:bg-surface-container-high hover:text-on-surface active:scale-[0.97] transition-all duration-150" href="#admin">
+<span class="material-symbols-outlined text-[20px]" data-icon="shield_person">shield_person</span>
+<span class="font-label-sm text-label-sm">Admin</span>
+</a>
+</nav>
+</body></html>

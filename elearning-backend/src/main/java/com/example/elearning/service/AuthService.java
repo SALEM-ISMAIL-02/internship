@@ -1,9 +1,10 @@
 package com.example.elearning.service;
 
+import com.example.elearning.audit.AuditEvent;
 import com.example.elearning.entity.User;
 import com.example.elearning.repository.UserRepository;
-import com.example.elearning.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Map<String, Object> register(String name, String email, String password, User.Role role) {
         if (userRepository.existsByEmail(email)) {
@@ -29,6 +30,8 @@ public class AuthService {
                 .role(role == null ? User.Role.LEARNER : role)
                 .build();
         userRepository.save(user);
+        eventPublisher.publishEvent(new AuditEvent("USER_REGISTERED", email, "USER", user.getId(),
+                user.getRole().name()));
         return buildAuthResponse(user);
     }
 
@@ -43,7 +46,6 @@ public class AuthService {
 
     private Map<String, Object> buildAuthResponse(User user) {
         Map<String, Object> resp = new HashMap<>();
-        resp.put("token", jwtUtil.generateToken(user.getEmail(), user.getRole().name()));
         resp.put("id", user.getId());
         resp.put("name", user.getName());
         resp.put("email", user.getEmail());

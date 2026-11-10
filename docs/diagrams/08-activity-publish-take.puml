@@ -1,0 +1,59 @@
+@startuml 08-activity-publish-take
+!theme plain
+title Activity - Review, publish, take, and submit a quiz
+skinparam shadowing false
+
+start
+partition "Instructor: draft review" {
+  :Edit draft questions;
+  :PUT /api/quizzes/{id};
+  if (Quiz is already published?) then (yes)
+    :Reject draft edit;\nUnpublish first;
+    stop
+  else (no)
+  endif
+  :PUT /api/quizzes/{id}/publish;
+  :Replace incoming questions;
+  :QuizValidationChain validates;
+  if (All validation rules pass?) then (no)
+    :400 validation error;
+    stop
+  else (yes)
+  endif
+  :QuizLifecycle.publish();
+  :Save published Quiz;
+  :Publish QUIZ_PUBLISHED audit event;
+}
+
+partition "Learner: take and submit" {
+  :GET /api/quizzes/{id}/take;
+  :QuizLifecycle.assertTakeable();
+  if (published?) then (no)
+    :400 quiz is not published;
+    stop
+  else (yes)
+  endif
+  :Return detached copy;\ncorrectAnswer hidden;
+  :Learner selects answers;
+  :POST /api/progress/quiz/{id}/submit;
+  :QuizGradingService grades answers;
+  :Persist QuizResult;
+  if (Score >= 50%?) then (yes)
+    :ProgressService applies +25%\ncourse progress bonus;
+  else (no)
+    :No progress bonus;
+  endif
+  :Persist LearnerProgress;
+  :Publish QUIZ_SUBMITTED audit event;
+}
+stop
+
+note right
+  Publish validation rules implemented by:
+  QuestionsPresentValidator
+  OptionCountValidator
+  CorrectAnswerIndexValidator
+  DuplicateStemValidator
+  MandatoryComplianceValidator
+end note
+@enduml

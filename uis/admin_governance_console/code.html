@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Safyron // Admin Governance Console</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary": "#1f3247",
+            "on-surface-variant": "#c4c6cd",
+            "outline-variant": "#44474d",
+            "on-tertiary-fixed": "#002113",
+            "on-primary-fixed": "#071d31",
+            "on-error-container": "#ffdad6",
+            "on-secondary": "#5a1c00",
+            "surface-variant": "#273647",
+            "on-tertiary": "#003824",
+            "secondary-container": "#f66018",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-secondary-fixed-variant": "#7f2b00",
+            "surface-bright": "#2c3a4c",
+            "on-surface": "#d4e4fa",
+            "secondary-fixed-dim": "#ffb599",
+            "surface-tint": "#b5c8e4",
+            "on-primary-container": "#788ba4",
+            "surface-container": "#122131",
+            "inverse-surface": "#d4e4fa",
+            "primary-container": "#0f2338",
+            "surface-container-lowest": "#010f1f",
+            "surface-container-low": "#0d1c2d",
+            "primary": "#b5c8e4",
+            "on-secondary-fixed": "#370e00",
+            "primary-fixed-dim": "#b5c8e4",
+            "surface": "#051424",
+            "outline": "#8e9197",
+            "tertiary-container": "#002819",
+            "on-tertiary-container": "#009d6c",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-secondary-container": "#4f1700",
+            "tertiary": "#4edea3",
+            "tertiary-fixed": "#6ffbbe",
+            "error-container": "#93000a",
+            "inverse-on-surface": "#233143",
+            "primary-fixed": "#d2e4ff",
+            "surface-container-highest": "#273647",
+            "error": "#ffb4ab",
+            "background": "#051424",
+            "surface-container-high": "#1c2b3c",
+            "on-error": "#690005",
+            "inverse-primary": "#4d6078",
+            "secondary-fixed": "#ffdbce",
+            "on-primary-fixed-variant": "#36485f",
+            "on-background": "#d4e4fa",
+            "secondary": "#ffb599",
+            "surface-dim": "#051424"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "gutter-mobile": "1rem",
+            "margin": "2rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"],
+            "label-md": ["JetBrains Mono"],
+            "headline-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "label-sm": ["JetBrains Mono"],
+            "body-md": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-lg": ["JetBrains Mono"],
+            "body-sm": ["Inter"],
+            "headline-xl-mobile": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+    }
+    .technical-grid {
+      background-size: 20px 20px;
+      background-image: linear-gradient(to right, rgba(148, 163, 184, 0.03) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
+    }
+    .bevel-highlight {
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-sm text-body-sm antialiased pb-24 technical-grid min-h-screen selection:bg-secondary-container selection:text-white">
+<!-- TopAppBar Anchor (Mobile Optimized) -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter-mobile h-14 bg-surface-container-low dark:bg-surface-container-low border-b border-outline-variant dark:border-outline-variant shadow-sm bevel-highlight">
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 rounded border border-outline-variant overflow-hidden shrink-0 bg-primary-container flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="Close up portrait photograph of an industrial safety systems engineer wearing a high-visibility carbon fiber helmet, protective technical goggles, and industrial equipment against a dark control room background with subtle telemetry reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPHtcfMfJWcTnvIX6P06xK19Z6sgzNlspPauQe4L_N2SoP2x2huhcNwRCJA5NGTqSJDAXNnJmCsVDgaTRqxIrXXYd-UFxLbEvD8z74AuHyAmH4iSdGxJ5g1-V_kDePoytL662j_cdMUOEAen8ZQGIsj4sBHzWvppFUkAnur4m_t-kLsiOECWdBfaNUuY5x29E5j0B2bq56ezsEuQUbmThmtXzfTTZxaJUb70yCHQ88x4ae0HgcyZec"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md uppercase tracking-wider text-primary dark:text-primary font-bold leading-tight">SAFYRON // ADMIN GOVERNANCE</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">SYS-ADMIN // NODE-01</span>
+</div>
+</div>
+<div class="flex items-center space-x-2">
+<div class="flex items-center space-x-1 px-2 py-0.5 rounded border border-outline-variant bg-surface-container-high">
+<span class="material-symbols-outlined text-secondary-container" data-icon="badge">badge</span>
+<span class="font-label-sm text-label-sm text-secondary-container font-semibold uppercase">System Admin</span>
+</div>
+</div>
+</header>
+<!-- OSHA / Mandatory Compliance Notice Banner -->
+<section class="mt-14 px-gutter-mobile pt-3 pb-1">
+<div class="bg-primary-container border-l-2 border-secondary-container border border-outline-variant p-2.5 rounded flex items-center justify-between shadow-sm">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary-container shrink-0" data-icon="warning">warning</span>
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-wide">OSHA REGULATORY ENFORCEMENT RUNTIME: LEVEL 4 AUDIT ACTIVE</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-mono shrink-0">[ONLINE]</span>
+</div>
+</section>
+<!-- Main Content Body -->
+<main class="px-gutter-mobile space-y-4 mt-2">
+<!-- Quick Stat Tiles (Telemetry Matrix) -->
+<section class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-mono">TELEMETRY // PLATFORM OVERVIEW</span>
+<span class="font-label-sm text-label-sm text-tertiary font-mono flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse inline-block"></span> REFRESHED: REALTIME
+        </span>
+</div>
+<div class="grid grid-cols-1 gap-2.5">
+<!-- Stat Tile 1: Total Users -->
+<div class="bg-primary-container border border-outline-variant rounded p-3 bevel-highlight flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-mono">TOTAL ENTERPRISE USERS</span>
+<span class="material-symbols-outlined text-primary font-mono" data-icon="groups">groups</span>
+</div>
+<div class="mt-2 flex items-baseline justify-between">
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-headline-lg text-primary tracking-tight font-bold">148</div>
+<div class="flex items-center space-x-2">
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high border border-outline-variant text-tertiary font-mono">ACT: 132</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high border border-outline-variant text-secondary-container font-mono">PND: 16</span>
+</div>
+</div>
+<!-- Tactile segmented meter -->
+<div class="mt-2.5 flex space-x-0.5 h-1.5 bg-surface-container-lowest p-0.5 rounded-sm">
+<div class="w-[89%] bg-tertiary h-full rounded-none"></div>
+<div class="w-[11%] bg-secondary-container h-full rounded-none"></div>
+</div>
+</div>
+<!-- Stat Tile 2 & 3 Combined Row -->
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Courses Published -->
+<div class="bg-primary-container border border-outline-variant rounded p-3 bevel-highlight flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-mono">COURSES</span>
+<span class="material-symbols-outlined text-primary" data-icon="library_books">library_books</span>
+</div>
+<div class="mt-2">
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-headline-lg text-on-surface font-bold">28</div>
+<div class="font-label-sm text-label-sm text-secondary-container font-mono mt-0.5 font-semibold">MANDATORY: 8</div>
+</div>
+</div>
+<!-- Compliance Rate -->
+<div class="bg-primary-container border border-outline-variant rounded p-3 bevel-highlight flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-mono">COMPLIANCE</span>
+<span class="material-symbols-outlined text-tertiary" data-icon="verified">verified</span>
+</div>
+<div class="mt-2">
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-headline-lg text-tertiary font-bold font-mono">94.2%</div>
+<div class="font-label-sm text-label-sm text-tertiary font-mono mt-0.5 flex items-center">
+<span class="material-symbols-outlined text-[13px] mr-0.5" data-icon="north_east">north_east</span> +1.4% OSHA
+              </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 1: User & Role Directory Management -->
+<section class="bg-primary-container border border-outline-variant rounded bevel-highlight">
+<!-- Header Strip -->
+<div class="px-3 py-2 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<span class="font-label-md text-label-md text-on-surface uppercase tracking-wider font-mono font-semibold">SEC-01 // USER &amp; ROLE DIRECTORY</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">[GOV_TBL]</span>
+</div>
+<div class="p-3 space-y-3">
+<!-- Search and Filter Bar -->
+<div class="space-y-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2.5 top-2.5 text-outline text-[18px]" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded py-1.5 pl-9 pr-3 text-on-surface font-body-sm text-body-sm placeholder:text-outline focus:border-secondary-container focus:ring-1 focus:ring-secondary-container focus:outline-none" placeholder="Filter personnel name, ID, or certification..." type="text"/>
+</div>
+<!-- Role Filters -->
+<div class="flex space-x-1.5 overflow-x-auto pb-0.5 text-label-sm font-label-sm font-mono">
+<button class="bg-surface-variant text-on-surface border border-outline px-2.5 py-1 rounded shrink-0 font-medium">[All]</button>
+<button class="bg-surface-container-low text-on-surface-variant border border-outline-variant hover:border-outline px-2.5 py-1 rounded shrink-0">[Learner]</button>
+<button class="bg-surface-container-low text-on-surface-variant border border-outline-variant hover:border-outline px-2.5 py-1 rounded shrink-0">[Instructor]</button>
+<button class="bg-surface-container-low text-on-surface-variant border border-outline-variant hover:border-outline px-2.5 py-1 rounded shrink-0">[Admin]</button>
+</div>
+</div>
+<!-- Directory User Rows -->
+<div class="space-y-2">
+<!-- User Row 1: Ahmed Ben Ali -->
+<div class="bg-surface-container-low border border-outline-variant rounded p-2.5 space-y-2">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-body-md text-body-md font-semibold text-on-surface">Ahmed Ben Ali</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant font-mono">Junior Engineer • SAF-88210</div>
+</div>
+<span class="font-label-sm text-label-sm bg-tertiary-container border border-tertiary text-tertiary px-1.5 py-0.5 rounded font-mono font-medium">[✓] Active</span>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">ASSIGNED ROLE:</span>
+<div class="relative">
+<select class="bg-surface-container-lowest border border-outline-variant rounded py-0.5 pl-2 pr-6 text-label-sm font-label-sm font-mono text-primary focus:border-secondary-container focus:outline-none">
+<option selected="">Learner</option>
+<option>Instructor</option>
+<option>Admin</option>
+</select>
+</div>
+</div>
+</div>
+<!-- User Row 2: Dr. Sarah Trabelsi -->
+<div class="bg-surface-container-low border border-outline-variant rounded p-2.5 space-y-2">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-body-md text-body-md font-semibold text-on-surface">Dr. Sarah Trabelsi</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant font-mono">Senior Safety Engineer • SAF-10492</div>
+</div>
+<span class="font-label-sm text-label-sm bg-tertiary-container border border-tertiary text-tertiary px-1.5 py-0.5 rounded font-mono font-medium">[✓] Active</span>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">ASSIGNED ROLE:</span>
+<div class="relative">
+<select class="bg-surface-container-lowest border border-outline-variant rounded py-0.5 pl-2 pr-6 text-label-sm font-label-sm font-mono text-secondary-container focus:border-secondary-container focus:outline-none font-semibold">
+<option>Learner</option>
+<option selected="">Instructor</option>
+<option>Admin</option>
+</select>
+</div>
+</div>
+</div>
+<!-- User Row 3: Mohamed Salem -->
+<div class="bg-surface-container-low border border-outline-variant rounded p-2.5 space-y-2">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-body-md text-body-md font-semibold text-on-surface">Mohamed Salem</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant font-mono">Field Inspector • SAF-33019</div>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container-high border border-secondary-container text-secondary-container px-1.5 py-0.5 rounded font-mono font-medium">[!] Review</span>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/60">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">ASSIGNED ROLE:</span>
+<div class="relative">
+<select class="bg-surface-container-lowest border border-outline-variant rounded py-0.5 pl-2 pr-6 text-label-sm font-label-sm font-mono text-primary focus:border-secondary-container focus:outline-none">
+<option selected="">Learner</option>
+<option>Instructor</option>
+<option>Admin</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button: Add / Invite Personnel -->
+<button class="w-full bg-secondary-container hover:bg-secondary-container/90 active:scale-[0.98] transition-transform duration-150 text-white font-label-md text-label-md uppercase tracking-wider py-2.5 px-3 rounded flex items-center justify-center space-x-1.5 font-bold shadow-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="person_add">person_add</span>
+<span>+ Add / Invite Enterprise Personnel</span>
+</button>
+</div>
+</section>
+<!-- Section 2: Industrial Safety Taxonomy & Categories -->
+<section class="bg-primary-container border border-outline-variant rounded bevel-highlight">
+<!-- Header Strip -->
+<div class="px-3 py-2 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<span class="font-label-md text-label-md text-on-surface uppercase tracking-wider font-mono font-semibold">SEC-02 // SAFETY TAXONOMY &amp; DOMAINS</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">4 ACTIVE</span>
+</div>
+<div class="p-3 space-y-2.5">
+<!-- Domain 1 -->
+<div class="flex items-center justify-between p-2.5 rounded bg-surface-container-low border border-outline-variant hover:border-outline transition-colors">
+<div class="flex items-start space-x-2.5">
+<span class="font-label-md text-label-md text-on-surface-variant font-mono pt-0.5">01</span>
+<div>
+<div class="font-body-md text-body-md font-semibold text-on-surface leading-tight">Industrial Safety &amp; OSHA</div>
+<div class="font-label-sm text-label-sm text-tertiary font-mono mt-0.5">9 Courses • Standard Compliant</div>
+</div>
+</div>
+<button class="px-2.5 py-1 bg-surface-container-high border border-outline-variant hover:border-outline text-primary rounded font-label-sm text-label-sm font-mono flex items-center space-x-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span>
+<span>[Edit]</span>
+</button>
+</div>
+<!-- Domain 2 -->
+<div class="flex items-center justify-between p-2.5 rounded bg-surface-container-low border border-outline-variant hover:border-outline transition-colors">
+<div class="flex items-start space-x-2.5">
+<span class="font-label-md text-label-md text-on-surface-variant font-mono pt-0.5">02</span>
+<div>
+<div class="font-body-md text-body-md font-semibold text-on-surface leading-tight">HAZOP, APR &amp; QRA Studies</div>
+<div class="font-label-sm text-label-sm text-tertiary font-mono mt-0.5">7 Courses • Process Risk Assessment</div>
+</div>
+</div>
+<button class="px-2.5 py-1 bg-surface-container-high border border-outline-variant hover:border-outline text-primary rounded font-label-sm text-label-sm font-mono flex items-center space-x-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span>
+<span>[Edit]</span>
+</button>
+</div>
+<!-- Domain 3 -->
+<div class="flex items-center justify-between p-2.5 rounded bg-surface-container-low border border-outline-variant hover:border-outline transition-colors">
+<div class="flex items-start space-x-2.5">
+<span class="font-label-md text-label-md text-on-surface-variant font-mono pt-0.5">03</span>
+<div>
+<div class="font-body-md text-body-md font-semibold text-on-surface leading-tight">Fire Protection &amp; Hydraulics</div>
+<div class="font-label-sm text-label-sm text-tertiary font-mono mt-0.5">8 Courses • NFPA Standards</div>
+</div>
+</div>
+<button class="px-2.5 py-1 bg-surface-container-high border border-outline-variant hover:border-outline text-primary rounded font-label-sm text-label-sm font-mono flex items-center space-x-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span>
+<span>[Edit]</span>
+</button>
+</div>
+<!-- Domain 4 -->
+<div class="flex items-center justify-between p-2.5 rounded bg-surface-container-low border border-outline-variant hover:border-outline transition-colors">
+<div class="flex items-start space-x-2.5">
+<span class="font-label-md text-label-md text-on-surface-variant font-mono pt-0.5">04</span>
+<div>
+<div class="font-body-md text-body-md font-semibold text-on-surface leading-tight">ATEX &amp; Explosion Proofing</div>
+<div class="font-label-sm text-label-sm text-tertiary font-mono mt-0.5">4 Courses • Hazardous Atmosphere</div>
+</div>
+</div>
+<button class="px-2.5 py-1 bg-surface-container-high border border-outline-variant hover:border-outline text-primary rounded font-label-sm text-label-sm font-mono flex items-center space-x-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="edit">edit</span>
+<span>[Edit]</span>
+</button>
+</div>
+<!-- Action Button: Create Category -->
+<button class="w-full bg-surface-container-high hover:bg-surface-container-highest active:scale-[0.98] transition-transform duration-150 border border-outline-variant text-on-surface font-label-md text-label-md uppercase tracking-wider py-2.5 px-3 rounded flex items-center justify-center space-x-1.5 font-bold shadow-sm mt-1">
+<span class="material-symbols-outlined text-[18px] text-tertiary" data-icon="create_new_folder">create_new_folder</span>
+<span>+ Create Safety Category</span>
+</button>
+</div>
+</section>
+<!-- Audit Log Telemetry Stamp -->
+<div class="p-2 border border-outline-variant/60 rounded bg-surface-container-lowest font-mono text-[10px] text-outline leading-tight space-y-0.5">
+<div>ENCRYPTION: AES-256 GCM // CERT-NODE: TUN-IND-994</div>
+<div>SESSION: 0x9FA84210B // REGULATORY RECONCILIATION: OK</div>
+</div>
+</main>
+<!-- BottomNavBar Anchor Component (Admin tab active mapped accurately) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter-mobile py-2 bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant dark:border-outline-variant pb-safe shadow-lg">
+<!-- Tab 1: Catalog (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-2 py-1 hover:bg-surface-container-high hover:text-on-surface active:scale-[0.97] transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-sm text-label-sm mt-0.5">Catalog</span>
+</a>
+<!-- Tab 2: My Safety (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-2 py-1 hover:bg-surface-container-high hover:text-on-surface active:scale-[0.97] transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-label-sm text-label-sm mt-0.5">My Safety</span>
+</a>
+<!-- Tab 3: Assess (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-2 py-1 hover:bg-surface-container-high hover:text-on-surface active:scale-[0.97] transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span class="font-label-sm text-label-sm mt-0.5">Assess</span>
+</a>
+<!-- Tab 4: Trainer (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-2 py-1 hover:bg-surface-container-high hover:text-on-surface active:scale-[0.97] transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-label-sm text-label-sm mt-0.5">Trainer</span>
+</a>
+<!-- Tab 5: Admin (Active State strictly applying style_active_navigation) -->
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary-container text-on-surface dark:text-on-surface rounded-lg px-2 py-1 border border-outline-variant dark:border-outline-variant active:scale-[0.97] transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-secondary-container" data-icon="shield_person">shield_person</span>
+<span class="font-label-sm text-label-sm font-semibold mt-0.5 text-secondary-container">Admin</span>
+</a>
+</nav>
+</body></html>

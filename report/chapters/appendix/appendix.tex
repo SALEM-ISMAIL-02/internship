@@ -1,0 +1,55 @@
+\section{Directory structure}
+\begin{lstlisting}
+report/
+  report.tex
+  chapters/
+    introduction.tex
+    chapter1-context.tex
+    chapter2-design.tex
+    chapter3-implementation-validation.tex
+    conclusion.tex
+    references.tex
+    appendix.tex
+  assets/
+    approved-diagrams/
+    screenshots/
+\end{lstlisting}
+
+\section{Representative REST contracts}
+\begin{lstlisting}
+POST /api/quizzes/manual
+{
+  "courseId": 11,
+  "title": "Safety assessment",
+  "questions": [
+    {
+      "text": "Which action is required before maintenance?",
+      "options": ["Lockout", "Ignore", "Delay", "None"],
+      "correctAnswer": 0
+    }
+  ]
+}
+
+POST /api/progress/quiz/13/submit?learnerId=5
+{"50": 1}
+
+PUT /api/quizzes/results/21/approve
+PUT /api/quizzes/results/21/unapprove
+\end{lstlisting}
+
+\section{Diagram catalogue}
+\begin{table}[H]\centering\small
+\caption{Project diagrams stored with the report}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.16\textwidth}X}
+\toprule Reference & Description\\\midrule
+01 & Global use cases.\\
+02--03 & AI generation use case and sequence.\\
+04 & Authentication sequence.\\
+05a--05d & AI, extraction, validation and service classes.\\
+06 & Component architecture.\\
+07 & Material activity diagram.\\
+10 & Learner quiz-taking and submission sequence.\\
+09 & Local deployment architecture.\\
+\bottomrule
+\end{tabularx}
+\end{table}

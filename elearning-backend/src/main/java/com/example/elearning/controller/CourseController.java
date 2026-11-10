@@ -1,14 +1,14 @@
 package com.example.elearning.controller;
 
 import com.example.elearning.entity.Course;
-import com.example.elearning.repository.UserRepository;
 import com.example.elearning.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -16,7 +16,6 @@ import java.util.List;
 public class CourseController {
 
     private final CourseService courseService;
-    private final UserRepository userRepository;
 
     @GetMapping
     public List<Course> list() {
@@ -29,9 +28,7 @@ public class CourseController {
     }
 
     @PostMapping
-    public Course create(@RequestBody Course course) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        userRepository.findByEmail(email).ifPresent(course::setInstructor);
+    public Course create(@RequestBody Course course, @RequestHeader(value = "X-User-Email", required = false) String email) {
         return courseService.create(course, email);
     }
 
@@ -41,8 +38,26 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        courseService.delete(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            courseService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(409).body(Map.of(
+                    "error", "Module cannot be deleted because related records still exist."));
+        }
+    }
+
+    /** Explicit lifecycle transition endpoint (State pattern rules are enforced in the service). */
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> changeStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        try {
+            Course.Status target = Course.Status.valueOf(body.getOrDefault("status", "").toUpperCase());
+            return ResponseEntity.ok(courseService.changeStatus(id, target));
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 }

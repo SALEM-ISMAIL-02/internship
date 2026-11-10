@@ -1,7 +1,7 @@
 # E-Learning Platform (Spring Boot + Angular + MySQL + AI Quiz Generation)
 
 ## Stack
-- **Backend:** Spring Boot 3 (Web, Data JPA, Security + JWT), MySQL (XAMPP), Apache PDFBox / POI for text extraction, OpenRouter-compatible AI API for quiz generation.
+- **Backend:** Spring Boot 3 (Web, Data JPA, open API access), MySQL (XAMPP), Apache PDFBox / POI for text extraction, Gemini-compatible AI API for quiz generation.
 - **Frontend:** Angular 21 (standalone components, signals), role-based routing, dev proxy to backend.
 - **VCS:** Git.
 
@@ -19,10 +19,26 @@ Tables created via JPA (`ddl-auto: update`): `users`, `courses`, `materials`, `q
 ## Run backend
 ```bash
 cd elearning-backend
-# set your AI key (OpenRouter free tier or any OpenAI-compatible API)
-set AI_API_KEY=sk-or-...        (PowerShell: $env:AI_API_KEY="sk-or-...")
+# The backend loads elearning-backend/.env automatically.
+# Alternatively set AI_API_KEY in the process environment.
+# Windows PowerShell: $env:AI_API_KEY="your-key"
+# Optional overrides: $env:AI_MODEL="gemini-flash-latest"
 mvn spring-boot:run
 ```
+
+The backend uses Gemini's OpenAI-compatible endpoint at
+`https://generativelanguage.googleapis.com/v1beta/openai`. The key is read only
+from `AI_API_KEY`; the local `.env` file is ignored by Git.
+
+## Swagger API testing
+
+With the backend running, open:
+
+`http://localhost:8080/swagger-ui/index.html`
+
+No JWT or bearer token is required. Swagger endpoints can be called directly. `Bearer <JWT>`. Log in through
+The frontend sends informational user email and role headers for ownership and
+dashboard behavior; these headers are not security controls.
 
 ## Run frontend
 ```bash

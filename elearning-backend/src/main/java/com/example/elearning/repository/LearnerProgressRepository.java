@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface LearnerProgressRepository extends JpaRepository<LearnerProgress, Long> {
     List<LearnerProgress> findByLearnerId(Long learnerId);
     Optional<LearnerProgress> findByLearnerIdAndCourseId(Long learnerId, Long courseId);
+    void deleteByCourseId(Long courseId);
+    void deleteByLearnerId(Long learnerId);
 }

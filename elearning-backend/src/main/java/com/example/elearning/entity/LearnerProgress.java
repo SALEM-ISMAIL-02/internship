@@ -2,6 +2,8 @@ package com.example.elearning.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "learner_progress",
@@ -12,6 +14,7 @@ public class LearnerProgress {
     private Long id;
 
     @ManyToOne(optional = false) @JoinColumn(name = "learner_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User learner;
 
     @ManyToOne(optional = false) @JoinColumn(name = "course_id")

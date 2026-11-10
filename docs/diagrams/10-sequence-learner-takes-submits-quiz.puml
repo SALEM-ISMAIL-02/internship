@@ -1,0 +1,59 @@
+@startuml
+title Learner Takes and Submits a Quiz
+
+actor Learner
+boundary "Web UI" as UI
+control "Quiz Controller" as QC
+database "Database" as DB
+
+ref over Learner,DB
+  Authentication
+end ref
+
+== Access Published Module ==
+
+Learner -> UI : Open published module
+UI -> QC : Request module details
+QC -> DB : Get published module
+DB --> QC : Module data
+QC --> UI : Module content
+UI --> Learner : Display material
+
+== Start Quiz ==
+
+Learner -> UI : Start quiz
+UI -> QC : Load quiz
+QC -> DB : Retrieve quiz questions
+DB --> QC : Questions
+QC --> UI : Quiz content
+UI --> Learner : Display quiz
+
+== Submit Quiz ==
+
+Learner -> UI : Submit answers
+UI -> QC : Validate submission
+QC -> DB : Check previous submission
+
+alt Already submitted
+    DB --> QC : Submission exists
+    QC --> UI : Reject submission
+    UI --> Learner : Quiz already submitted
+else First submission
+    DB --> QC : No submission found
+    QC -> DB : Save answers
+    QC -> DB : Create submission\n(Status = PENDING)
+    DB --> QC : Saved
+    QC --> UI : Submission successful
+    UI --> Learner : Result pending review
+end
+
+== Follow Approval Status ==
+
+Learner -> UI : View status
+UI -> QC : Request status
+QC -> DB : Retrieve status
+DB --> QC : Pending / Approved / Revoked
+QC --> UI : Status
+UI --> Learner : Display status
+
+@enduml

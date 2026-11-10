@@ -1,0 +1,131 @@
+\chapter{Implementation and Validation}
+\section*{Introduction}
+This chapter presents the implementation of the principal workflows and the
+technical environment used during the internship. It connects the design
+decisions to concrete backend services, Angular screens, persistence rules and
+API operations.
+
+\section{Development environment and technologies}
+\begin{table}[H]\centering
+\caption{Technologies and versions}\label{tab:technologies}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth}p{0.20\textwidth}X}
+\toprule Technology & Version & Purpose\\\midrule
+Angular & 21 & Single-page frontend application.\\
+TypeScript & 5.9 & Frontend implementation language.\\
+Spring Boot & 3.3.5 & REST backend framework.\\
+Java & 21 target & Backend implementation language.\\
+Spring Data JPA & Project version & Relational persistence and repositories.\\
+MySQL & Project environment & Main relational database.\\
+H2 & Test environment & Isolated backend test database.\\
+Maven & Project environment & Backend dependency and build management.\\
+Node.js / npm & Project environment & Frontend dependency and build management.\\
+Gemini API & Gemini Flash & AI-assisted quiz generation.\\
+OpenAPI / Swagger & Project dependency & Interactive API documentation and testing.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Backend implementation}
+The backend is implemented with Spring Boot 3.3, Spring Web, Spring Data JPA,
+validation and Spring Security. Controllers expose focused REST resources for
+authentication, courses, materials, quizzes, progress and administration.
+Services contain the business rules and repositories isolate database access.
+
+\img{assets/approved-diagrams/09-deployment.png}{Deployment architecture of the local solution}
+The running solution is organized as an Angular client, a Spring Boot REST
+application, a MySQL database and external integration services. This
+deployment view complements the conceptual design in Chapter 2 by showing the
+runtime boundaries used during validation.
+
+\begin{table}[H]\centering
+\caption{Main backend layers}\label{tab:backend-layers}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.22\textwidth}X}
+\toprule Layer & Responsibility\\\midrule
+Controller & HTTP mapping, request validation and response status.\\
+Service & Lifecycle rules, ownership, grading and transactional operations.\\
+Repository & JPA queries and dependent-record lookup.\\
+Entity & Relational domain model and associations.\\
+Integration & Gemini client, document extraction and file serving.\\\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Frontend implementation}
+The frontend is an Angular 21 single-page application styled with Tailwind
+utilities and a shared Safyron design system. Shared navigation, cards,
+status badges, tables and action controls are reused across role dashboards.
+The interface deliberately exposes different actions to learners, instructors
+and administrators.
+
+\section{Learner experience}
+\img{assets/screenshots/login.png}{Live screenshot captured from the running login page}
+\img{assets/screenshots/learner-dashboard.png}{Live screenshot captured from the learner portal}
+The learner portal presents published modules with their completion state,
+material controls and quiz availability. Files can be opened in the browser or
+downloaded. Once a quiz has been submitted, its action is visually disabled
+while the learning material remains available.
+
+\section{Instructor studio}
+\img{assets/screenshots/instructor-dashboard.png}{Live screenshot captured from the instructor studio}
+The instructor studio combines module management, document intake, AI quiz
+synthesis and manual authoring. It also presents pending submissions with
+learner and module context. The detailed view expands the selected submission
+to show each question, the learner answer and the correct answer.
+
+\section{Administrator console}
+\img{assets/screenshots/admin-dashboard.png}{Live screenshot captured from the administrator console}
+The administrator console provides user creation and deletion, module
+oversight, quiz management and submission indicators. The grouped view makes
+the module the primary reporting unit and includes the submission date and
+review state.
+
+\section{Answer persistence and grading}
+Answers are stored using the persistent question identifier rather than the
+position of a question in the displayed array. This distinction prevents
+review screens from displaying ``Not answered'' when the learner selected
+option zero or when questions were reordered. The grading service stores the
+submitted answer map as JSON and creates one result per learner and quiz.
+
+\section{File management and deletion}
+The material controller exposes an inline file endpoint and a download action.
+Course deletion is transactional and removes quiz results, progress, quizzes
+and materials before deleting the module. User deletion similarly removes
+learner-dependent records and detaches owned entities. These measures prevent
+the foreign-key error that originally appeared when deleting users directly
+from the database.
+
+\section{Swagger and API usage}
+OpenAPI documentation is exposed by the backend and provides an interactive
+Swagger UI for testing. Typical operations include:
+\begin{lstlisting}
+POST /api/auth/login
+GET  /api/courses/published
+POST /api/quizzes/generate
+POST /api/quizzes/manual
+POST /api/progress/quiz/{quizId}/submit
+PUT  /api/quizzes/results/{resultId}/approve
+PUT  /api/quizzes/results/{resultId}/unapprove
+\end{lstlisting}
+
+\section{Implementation difficulties and corrective actions}
+Several defects were discovered through integration and browser validation.
+Learner answers initially used array positions while the instructor review
+expected persistent question identifiers; the answer binding was corrected and
+legacy values were normalized. A second quiz attempt was initially possible,
+so the service now rejects an existing learner--quiz result with HTTP 409.
+
+Module and user deletion initially failed because dependent rows remained in
+the database. Transactional cleanup, repository deletion methods and
+database-level cascade or ``SET NULL'' behavior were added. AI generation also
+produced misleading forbidden responses when an application exception was
+forwarded to a protected error route; explicit error responses now expose the
+actual failure to the client.
+
+\input{chapters/chapter4/chapter4}
+
+\section*{Conclusion}
+The implementation connects the role-specific Angular experience to a
+transactional Spring Boot backend, and the validation activities confirm the
+main learner, instructor and administrator workflows. The report also
+identifies the remaining production-hardening work without overstating the
+evidence obtained during a one-month internship.

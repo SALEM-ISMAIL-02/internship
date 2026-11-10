@@ -1,0 +1,102 @@
+\section{Validation and Results}
+\section*{Validation introduction}
+Validation was performed at several levels because a successful compilation
+does not prove that the learning lifecycle is correct. The checks below cover
+automated backend tests, frontend builds, API behavior, database consistency
+and browser journeys for the three roles.
+
+\section{Validation strategy}
+Validation combined unit and integration tests for the backend, an Angular
+production build, Swagger checks and live HTTP scenarios. The objective was
+not only to verify that an endpoint returned a response, but to verify the
+business rule represented by that response.
+
+\begin{table}[H]\centering
+\caption{Validation activities}\label{tab:validation}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.30\textwidth}X}
+\toprule Activity & Result\\\midrule
+Backend clean tests & Passed after CRUD, grading and deletion changes.\\
+Angular production build & Passed with the final dashboard and branding changes.\\
+OpenAPI availability & Swagger UI and OpenAPI JSON returned successfully.\\
+Module deletion & Returned successful deletion after dependent cleanup.\\
+Answer persistence & Review returned the selected option for the correct question.\\
+Duplicate submission & A second attempt was rejected with HTTP 409.\\
+User deletion & Dependent learner records were removed without a foreign-key failure.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Validation traceability}
+\begin{table}[H]\centering
+\caption{Traceability between requirements and validation}
+\label{tab:traceability}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth}X}
+\toprule Requirement & Validation evidence\\\midrule
+Security & JWT-aware login design, role-aware routes and protected operations.\\
+Consistency & Real module and user deletion scenarios without foreign-key failure.\\
+Traceability & Detailed answer review, submission date and approval/unapproval.\\
+Maintainability & Successful layered backend tests and Angular production build.\\
+AI continuity & Manual quiz creation remains available beside AI generation.\\
+One-time assessment & First submission succeeds and repeated submission returns 409.\\
+Material availability & Files remain accessible after quiz submission.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Functional scenarios}
+The first scenario creates a module and attaches documents. The second
+generates or manually creates a quiz and publishes it. The learner then opens
+the module, selects answers and submits once. The instructor sees the
+submission in the review area, expands the detailed answers and approves it.
+The administrator can consult the grouped submission statistics.
+
+\section{Quality results}
+The principal defects discovered during development were incorrect answer
+keys, misleading HTTP 403 responses caused by error forwarding, incomplete
+dependent deletion and an interface that allowed a second attempt. Each issue
+was fixed at its root: question IDs are now used for answer maps, application
+errors return explicit statuses, deletion is transactional, and both backend
+and frontend prevent retakes.
+
+\section{Security and operational limitations}
+The JWT integration provides the intended authentication and authorization
+boundary for deployment. Secret values, including the AI provider key, must
+remain in environment configuration and must be rotated if exposed. File
+uploads should receive size, type and content scanning limits before production.
+Rate limiting and audit retention are also recommended for a public
+deployment.
+
+\section{Difficulties, limitations and perspectives}
+The most important difficulties were not isolated coding errors but
+interactions between features. Deleting a module required understanding all
+dependent records. Persisting an answer required a stable question key rather
+than a temporary array index. The approval workflow required a reversible
+state, not only a one-way button. These issues were corrected through service
+rules, repository operations and end-to-end checks.
+
+The current validation does not constitute a production load test or an
+independent security audit. Future work should measure performance with a
+larger catalogue, add automated accessibility checks, scan uploaded files,
+rotate refresh tokens, export audit records and add notifications. The AI
+workflow should also display confidence or source references and be evaluated
+against a larger curated question corpus.
+
+\section{User experience observations}
+The live screenshots show a coherent visual language: blue-gray surfaces,
+strong contrast, shield branding, status badges and action-oriented cards.
+The instructor screen emphasizes operational work, while the learner screen
+keeps the path to course material and assessment simple. The administrator
+screen prioritizes counts, grouped submissions and governance actions.
+
+\section{Personal contribution}
+This internship required work across requirements analysis, Angular
+components, Spring services, relational integrity, third-party AI integration,
+API documentation and testing. The most valuable lesson was that a feature is
+not complete when its happy path works: its deletion behavior, error response,
+role boundary and persistence format must also be verified.
+
+\section*{Conclusion}
+The validation confirms that the main learner, instructor and administrator
+workflows are implemented and testable. It also identifies the remaining
+production-hardening work without overstating the evidence obtained during a
+one-month internship.

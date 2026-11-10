@@ -8,7 +8,6 @@ export interface AuthUser {
   name: string;
   email: string;
   role: 'LEARNER' | 'INSTRUCTOR' | 'ADMIN';
-  token: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -45,7 +44,4 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  get token(): string | null {
-    return this.user()?.token ?? null;
-  }
 }

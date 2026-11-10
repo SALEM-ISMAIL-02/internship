@@ -1,0 +1,110 @@
+@startuml 05d-class-services
+!theme plain
+title Classes - Application services, domain entities, persistence, and audit
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+package "Web adapters" {
+  class AuthController
+  class CourseController
+  class MaterialController
+  class QuizController
+  class ProgressController
+  class UserController
+  class AuditController
+}
+
+package "Application services" {
+  class AuthService
+  class CourseService
+  class MaterialService
+  class MaterialQueryService
+  class QuizService
+  class ProgressService
+  class QuizGradingService
+  class UserAdminService
+  class AuditQueryService
+  class FileStorageService
+  class FileTypeResolver
+}
+
+package "Domain entities" {
+  class User
+  class Course
+  class Material
+  class Quiz
+  class Question
+  class LearnerProgress
+  class QuizResult
+}
+
+package "Persistence adapters" {
+  interface UserRepository
+  interface CourseRepository
+  interface MaterialRepository
+  interface QuizRepository
+  interface LearnerProgressRepository
+  interface QuizResultRepository
+  interface AuditLogRepository
+}
+
+package "Audit" {
+  class AuditEvent <<record>>
+  class AuditLog
+  class AuditLogListener
+}
+
+AuthController --> AuthService
+CourseController --> CourseService
+MaterialController --> MaterialService
+MaterialController --> MaterialQueryService
+QuizController --> QuizService
+ProgressController --> ProgressService
+UserController --> UserAdminService
+AuditController --> AuditQueryService
+
+AuthService --> UserRepository
+CourseService --> CourseRepository
+CourseService --> UserRepository
+MaterialService --> CourseRepository
+MaterialService --> MaterialRepository
+MaterialService --> FileStorageService
+MaterialService --> FileTypeResolver
+MaterialQueryService --> MaterialRepository
+QuizService --> QuizRepository
+QuizService --> CourseRepository
+QuizService --> QuizGenerator
+QuizService --> QuizValidationChain
+QuizService --> QuizLifecycle
+ProgressService --> LearnerProgressRepository
+ProgressService --> QuizResultRepository
+ProgressService --> QuizGradingService
+ProgressService --> QuizRepository
+QuizGradingService --> QuizScoringPolicy
+UserAdminService --> UserRepository
+AuditQueryService --> AuditLogRepository
+AuditLogListener --> AuditLogRepository
+AuditLogListener ..> AuditEvent : observes
+
+Course "1" <-- "0..*" Material
+Course "1" <-- "0..*" Quiz
+Quiz "1" *-- "1..*" Question
+User "1" <-- "0..*" LearnerProgress
+Course "1" <-- "0..*" LearnerProgress
+User "1" <-- "0..*" QuizResult
+Quiz "1" <-- "0..*" QuizResult
+UserRepository ..> User
+CourseRepository ..> Course
+MaterialRepository ..> Material
+QuizRepository ..> Quiz
+LearnerProgressRepository ..> LearnerProgress
+QuizResultRepository ..> QuizResult
+AuditLogRepository ..> AuditLog
+
+note bottom
+  Controllers are thin HTTP adapters.
+  Spring Data JPA repositories persist the entities in MySQL.
+  Domain relationships are shown as implemented by the entity model;
+  authorization is enforced separately by SecurityConfig and method security.
+end note
+@enduml

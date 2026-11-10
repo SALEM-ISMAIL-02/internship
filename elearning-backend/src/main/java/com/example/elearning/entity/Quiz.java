@@ -2,6 +2,8 @@ package com.example.elearning.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class Quiz {
     private Course course;
 
     @ManyToOne @JoinColumn(name = "created_by")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private User createdBy;
 
     @Column(nullable = false)

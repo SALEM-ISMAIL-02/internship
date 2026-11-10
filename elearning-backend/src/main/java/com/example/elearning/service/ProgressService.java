@@ -1,14 +1,19 @@
 package com.example.elearning.service;
 
+import com.example.elearning.audit.AuditEvent;
 import com.example.elearning.entity.*;
 import com.example.elearning.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * SRP: ONLY tracks course progress. Quiz grading lives in {@link QuizGradingService}.
+ */
 @Service
 @RequiredArgsConstructor
 public class ProgressService {
@@ -16,63 +21,47 @@ public class ProgressService {
     private final LearnerProgressRepository progressRepository;
     private final CourseRepository courseRepository;
     private final QuizResultRepository quizResultRepository;
-    private final QuizRepository quizRepository;
+    private final QuizGradingService quizGradingService;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public LearnerProgress updateProgress(Long learnerId, Long courseId, int progress) {
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new IllegalArgumentException("Course not found"));
-        LearnerProgress lp = progressRepository.findByLearnerIdAndCourseId(learnerId, courseId)
+    public List<LearnerProgress> getProgress(Long learnerId) {
+        return progressRepository.findByLearnerId(learnerId);
+    }
+
+    /**
+     * Delegates scoring to {@link QuizGradingService}, then applies the
+     * progress-bonus policy (SRP: this class owns the bonus rule only).
+     */
+    @Transactional
+    public QuizResult submitQuiz(Long learnerId, Long quizId, Map<Long, Integer> answers) {
+        if (quizResultRepository.findByLearnerId(learnerId).stream()
+                .anyMatch(result -> result.getQuiz().getId().equals(quizId))) {
+            throw new IllegalStateException("This quiz has already been submitted and cannot be retaken");
+        }
+        QuizGradingService.GradingOutcome outcome = quizGradingService.grade(learnerId, quizId, answers);
+        int score = outcome.result().getScore();
+
+        LearnerProgress lp = findOrInit(learnerId, outcome.quiz().getCourse());
+        lp.setProgress(100);
+        lp.setCompleted(false);
+        progressRepository.save(lp);
+
+        eventPublisher.publishEvent(new AuditEvent("QUIZ_SUBMITTED", null, "QUIZ", quizId,
+                "learner #" + learnerId + " scored " + score + "%"));
+        return outcome.result();
+    }
+
+    public List<QuizResult> getResults(Long learnerId) {
+        return quizResultRepository.findByLearnerId(learnerId);
+    }
+
+    private LearnerProgress findOrInit(Long learnerId, Course course) {
+        return progressRepository.findByLearnerIdAndCourseId(learnerId, course.getId())
                 .orElseGet(() -> LearnerProgress.builder()
                         .learner(User.builder().id(learnerId).build())
                         .course(course)
                         .progress(0)
                         .completed(false)
                         .build());
-        lp.setProgress(Math.max(0, Math.min(100, progress)));
-        lp.setCompleted(lp.getProgress() >= 100);
-        return progressRepository.save(lp);
-    }
-
-    public List<LearnerProgress> getProgress(Long learnerId) {
-        return progressRepository.findByLearnerId(learnerId);
-    }
-
-    public QuizResult submitQuiz(Long learnerId, Long quizId, Map<Long, Integer> answers) {
-        Quiz quiz = quizRepository.findById(quizId)
-                .orElseThrow(() -> new IllegalArgumentException("Quiz not found"));
-        int total = quiz.getQuestions().size();
-        if (total == 0) throw new IllegalStateException("Quiz has no questions");
-
-        long correct = quiz.getQuestions().stream()
-                .filter(q -> answers != null && answers.get(q.getId()) != null
-                        && answers.get(q.getId()) == q.getCorrectAnswer())
-                .count();
-        int score = (int) Math.round(correct * 100.0 / total);
-
-        QuizResult result = QuizResult.builder()
-                .learner(User.builder().id(learnerId).build())
-                .quiz(quiz)
-                .score(score)
-                .date(LocalDateTime.now())
-                .build();
-        result = quizResultRepository.save(result);
-
-        // Simple rule: passing the quiz bumps course progress by 25%
-        int bonus = score >= 50 ? 25 : 0;
-        LearnerProgress lp = progressRepository.findByLearnerIdAndCourseId(learnerId, quiz.getCourse().getId())
-                .orElseGet(() -> LearnerProgress.builder()
-                        .learner(User.builder().id(learnerId).build())
-                        .course(quiz.getCourse())
-                        .progress(0)
-                        .completed(false)
-                        .build());
-        lp.setProgress(Math.min(100, lp.getProgress() + bonus));
-        lp.setCompleted(lp.getProgress() >= 100);
-        progressRepository.save(lp);
-        return result;
-    }
-
-    public List<QuizResult> getResults(Long learnerId) {
-        return quizResultRepository.findByLearnerId(learnerId);
     }
 }

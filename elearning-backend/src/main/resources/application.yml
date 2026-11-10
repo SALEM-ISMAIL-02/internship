@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
     url: jdbc:mysql://localhost:3306/elearning_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: root
@@ -14,15 +16,17 @@ spring:
       max-request-size: 25MB
 
 app:
-  jwt:
-    secret: "ChangeMe-ThisIsA256BitSecretKeyForJwtSigning-ChangeMe-0123456789"
-    expiration-ms: 86400000
   upload-dir: ./uploads
   ai:
-    # Google Gemini via its OpenAI-compatible endpoint
+    # Google Gemini via its OpenAI-compatible endpoint (Adapter pattern).
+    # Keep the key outside source control: set AI_API_KEY in the process environment.
+    provider: ${AI_PROVIDER:openai-compatible}
     base-url: https://generativelanguage.googleapis.com/v1beta/openai
-    api-key: ${AI_API_KEY:REDACTED}
+    api-key: ${AI_API_KEY:}
     model: ${AI_MODEL:gemini-flash-latest}
+    # Decorator: retry on 5xx / dropped connections (free tiers answer 503 "high demand")
+    max-attempts: 3
+    retry-delay-ms: 2000
 
 server:
   port: 8080

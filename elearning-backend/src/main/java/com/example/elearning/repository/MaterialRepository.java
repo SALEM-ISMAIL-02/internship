@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface MaterialRepository extends JpaRepository<Material, Long> {
     List<Material> findByCourseId(Long courseId);
+    void deleteByCourseId(Long courseId);
 }

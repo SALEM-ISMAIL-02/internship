@@ -1,0 +1,52 @@
+@startuml 02-usecase-detailed-generate-quiz
+!theme plain
+title UC - Generate an AI quiz draft from course material
+left to right direction
+skinparam shadowing false
+
+actor "Instructor" as instructor
+actor "Gemini API\n(OpenAI-compatible)" as gemini
+
+rectangle "UC: Generate quiz draft" {
+  usecase "Submit materialId,\nnumQuestions, creatorId" as request
+  usecase "Load material" as load
+  usecase "Resolve extractor by type" as resolve
+  usecase "Extract and truncate text" as extract
+  usecase "Build MCQ prompt" as prompt
+  usecase "Request completion" as completion
+  usecase "Parse JSON question array" as parse
+  usecase "Persist unpublished Quiz\nwith Questions" as persist
+  usecase "Publish QUIZ_GENERATED\naudit event" as event
+  usecase "Return Quiz draft" as response
+}
+
+instructor --> request
+request .> load : <<include>>
+load .> resolve : <<include>>
+resolve .> extract : <<include>>
+extract .> prompt : <<include>>
+prompt .> completion : <<include>>
+completion --> gemini
+completion .> parse : <<include>>
+parse .> persist : <<include>>
+persist .> event : <<include>>
+event .> response : <<include>>
+
+note right of extract
+  PDF -> PdfTextExtractor
+  DOCX -> DocxTextExtractor
+  PPTX -> PptxTextExtractor
+  VIDEO/OTHER -> NullTextExtractor
+  Source is capped at 12,000 chars.
+end note
+
+note bottom
+  POST /api/quizzes/generate
+  Controller: QuizController
+  Orchestration: QuizService
+  Algorithm: AbstractQuizGenerator
+  Concrete implementation: AiQuizGenerator
+  The result is a draft (published = false).
+  Validation occurs later, at publish time.
+end note
+@enduml

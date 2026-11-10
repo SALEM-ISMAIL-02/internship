@@ -1,132 +1,84 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AdminApiService } from './admin-api.service';
+import {
+  Course,
+  LearnerProgress,
+  Material,
+  Quiz,
+  QuizResult,
+} from './api-models';
+import { CourseApiService } from './course-api.service';
+import { MaterialApiService } from './material-api.service';
+import { ProgressApiService } from './progress-api.service';
+import { QuizApiService } from './quiz-api.service';
 
-export interface Course {
-  id?: number;
-  title: string;
-  description?: string;
-  category?: string;
-  priority?: 'LOW' | 'MEDIUM' | 'HIGH' | 'MANDATORY';
-  status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
-  instructor?: { id: number };
-}
+export type { Course, LearnerProgress, Material, Question, Quiz, QuizResult } from './api-models';
 
-export interface Material {
-  id?: number;
-  type: string;
-  filePath: string;
-  originalName?: string;
-  course?: { id: number };
-}
-
-export interface Question {
-  id?: number;
-  text: string;
-  options: string[];
-  correctAnswer: number;
-}
-
-export interface Quiz {
-  id?: number;
-  course?: { id: number };
-  aiGenerated?: boolean;
-  published?: boolean;
-  questions: Question[];
-}
-
-export interface LearnerProgress {
-  id?: number;
-  progress: number;
-  completed: boolean;
-  course?: Course;
-}
-
-export interface QuizResult {
-  id?: number;
-  score: number;
-  date: string;
-  quiz?: Quiz;
-}
-
+/**
+ * SRP facade kept for backward compatibility: re-exports the domain models
+ * and delegates every call to the focused *ApiService behind it (DIP).
+ * New code should inject CourseApiService / QuizApiService / ... directly.
+ */
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private base = '/api';
+  constructor(
+    private courses: CourseApiService,
+    private materials: MaterialApiService,
+    private quizzes: QuizApiService,
+    private progress: ProgressApiService,
+    private admin: AdminApiService
+  ) {}
 
-  constructor(private http: HttpClient) {}
-
-  // Courses
-  listCourses(): Observable<Course[]> {
-    return this.http.get<Course[]>(`${this.base}/courses`);
-  }
-  createCourse(c: Course): Observable<Course> {
-    return this.http.post<Course>(`${this.base}/courses`, c);
-  }
-  updateCourse(id: number, c: Course): Observable<Course> {
-    return this.http.put<Course>(`${this.base}/courses/${id}`, c);
-  }
-  deleteCourse(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.base}/courses/${id}`);
+  listCourses(): Observable<Course[]> { return this.courses.list(); }
+  createCourse(c: Course): Observable<Course> { return this.courses.create(c); }
+  updateCourse(id: number, c: Course): Observable<Course> { return this.courses.update(id, c); }
+  deleteCourse(id: number): Observable<void> { return this.courses.delete(id); }
+  changeCourseStatus(id: number, status: NonNullable<Course['status']>): Observable<Course> {
+    return this.courses.changeStatus(id, status);
   }
 
-  // Materials
   uploadMaterial(courseId: number, file: File): Observable<Material> {
-    const form = new FormData();
-    form.append('file', file);
-    return this.http.post<Material>(`${this.base}/materials/upload/${courseId}`, form);
+    return this.materials.upload(courseId, file);
   }
   materialsByCourse(courseId: number): Observable<Material[]> {
-    return this.http.get<Material[]>(`${this.base}/materials/course/${courseId}`);
+    return this.materials.byCourse(courseId);
   }
+  deleteMaterial(id: number): Observable<void> { return this.materials.delete(id); }
 
-  // Quizzes
   generateQuiz(materialId: number, numQuestions: number, creatorId: number): Observable<Quiz> {
-    return this.http.post<Quiz>(`${this.base}/quizzes/generate`, {
-      materialId,
-      numQuestions,
-      creatorId,
-    });
+    return this.quizzes.generate(materialId, numQuestions, creatorId);
   }
-  quizzesByCourse(courseId: number): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(`${this.base}/quizzes/course/${courseId}`);
+  createManualQuiz(courseId: number, creatorId: number): Observable<Quiz> {
+    return this.quizzes.createManual(courseId, creatorId);
   }
-  publishQuiz(id: number, quiz: Quiz): Observable<Quiz> {
-    return this.http.put<Quiz>(`${this.base}/quizzes/${id}/publish`, quiz);
+  quizzesByCourse(courseId: number): Observable<Quiz[]> { return this.quizzes.byCourse(courseId); }
+  publishQuiz(id: number, quiz: Quiz): Observable<Quiz> { return this.quizzes.publish(id, quiz); }
+  /** Saves draft edits to a quiz's questions (backend rejects edits while published). */
+  updateQuiz(id: number, quiz: Quiz): Observable<Quiz> { return this.quizzes.updateDraft(id, quiz); }
+  /** PROTOTYPE: deep-clone a quiz (questions included) into a new draft. */
+  duplicateQuiz(id: number, courseId?: number): Observable<Quiz> {
+    return this.quizzes.duplicate(id, courseId);
   }
-  takeQuiz(id: number): Observable<Quiz> {
-    return this.http.get<Quiz>(`${this.base}/quizzes/${id}/take`);
-  }
+  /** STATE: move a published quiz back to draft. */
+  unpublishQuiz(id: number): Observable<Quiz> { return this.quizzes.unpublish(id); }
+  deleteQuiz(id: number): Observable<void> { return this.quizzes.delete(id); }
+  takeQuiz(id: number): Observable<Quiz> { return this.quizzes.take(id); }
+  reviewResults(): Observable<any[]> { return this.quizzes.reviewResults(); }
+  approveResult(id: number): Observable<any> { return this.quizzes.approveResult(id); }
+  unapproveResult(id: number): Observable<any> { return this.quizzes.unapproveResult(id); }
 
-  // Progress
-  updateProgress(learnerId: number, courseId: number, progress: number) {
-    return this.http.put<LearnerProgress>(`${this.base}/progress`, {
-      learnerId,
-      courseId,
-      progress,
-    });
-  }
   myProgress(learnerId: number): Observable<LearnerProgress[]> {
-    return this.http.get<LearnerProgress[]>(`${this.base}/progress`, {
-      params: new HttpParams().set('learnerId', learnerId),
-    });
+    return this.progress.mine(learnerId);
   }
   submitQuiz(quizId: number, learnerId: number, answers: Record<number, number>): Observable<QuizResult> {
-    return this.http.post<QuizResult>(
-      `${this.base}/progress/quiz/${quizId}/submit?learnerId=${learnerId}`,
-      answers
-    );
+    return this.progress.submitQuiz(quizId, learnerId, answers);
   }
-  myResults(learnerId: number): Observable<QuizResult[]> {
-    return this.http.get<QuizResult[]>(`${this.base}/progress/results`, {
-      params: new HttpParams().set('learnerId', learnerId),
-    });
-  }
+  myResults(learnerId: number): Observable<QuizResult[]> { return this.progress.results(learnerId); }
 
-  // Admin
-  listUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.base}/users`);
+  listUsers(): Observable<any[]> { return this.admin.listUsers(); }
+  createUser(user: { name: string; email: string; password: string; role: string }): Observable<any> {
+    return this.admin.createUser(user);
   }
-  deleteUser(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.base}/users/${id}`);
-  }
+  deleteUser(id: number): Observable<void> { return this.admin.deleteUser(id); }
 }

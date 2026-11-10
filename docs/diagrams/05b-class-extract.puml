@@ -1,0 +1,41 @@
+@startuml 05b-class-extract
+!theme plain
+title Classes - Material text extraction strategies
+skinparam shadowing false
+
+package "com.example.elearning.extract" {
+  interface TextExtractor {
+    + extract(path: Path): String
+  }
+  class PdfTextExtractor {
+    + extract(path: Path): String
+  }
+  class DocxTextExtractor {
+    + extract(path: Path): String
+  }
+  class PptxTextExtractor {
+    + extract(path: Path): String
+  }
+  class NullTextExtractor {
+    + extract(path: Path): String
+  }
+  class TextExtractorFactory {
+    + forType(type: MaterialType): TextExtractor
+    + supportedTypes(): Set<MaterialType>
+  }
+}
+
+TextExtractor <|.. PdfTextExtractor
+TextExtractor <|.. DocxTextExtractor
+TextExtractor <|.. PptxTextExtractor
+TextExtractor <|.. NullTextExtractor
+TextExtractorFactory ..> TextExtractor : selects strategy
+PdfTextExtractor ..> "Apache PDFBox" : uses
+DocxTextExtractor ..> "Apache POI" : uses
+PptxTextExtractor ..> "Apache POI" : uses
+
+note bottom
+  PDF, DOCX and PPTX have concrete strategies.
+  VIDEO and OTHER resolve to NullTextExtractor and produce no text.
+end note
+@enduml

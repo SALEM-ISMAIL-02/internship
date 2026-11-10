@@ -4,3 +4,19 @@ target/
 uploads/
 .env
 *.log
+
+# LaTeX build artifacts
+report/*.aux
+report/*.fdb_latexmk
+report/*.fls
+report/*.lof
+report/*.lot
+report/*.out
+report/*.toc
+report/*-check.png
+report/learner-sequence-page.png
+report/chap1/test.tex
+
+# Temporary exports and local archives
+report/docx-assets/
+*.zip

@@ -1,0 +1,238 @@
+﻿\chapter{Analysis and Design}
+\section*{Introduction}
+The design phase transforms the company context into explicit requirements,
+responsibilities, workflows and data structures. The following sections
+separate what the platform must do from how the Angular, Spring Boot and
+MySQL components implement it.
+
+\section{Functional requirements}
+The platform is organized around a module lifecycle. An instructor creates a
+module, attaches source documents, optionally generates a quiz, reviews it and
+publishes the module. A learner can then consult the published material and
+submit the associated quiz once. The result remains pending until the
+instructor reviews the answers.
+
+\begin{table}[H]\centering
+\caption{Functional requirements matrix}\label{tab:requirements}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.12\textwidth}p{0.28\textwidth}X}
+ID & Function & Acceptance criterion\\\toprule
+F01 & Authentication & An existing user can access the interface according to the role.\\
+F02 & Module & A module has a title, description, category, priority and state.\\
+F03 & Material & A file is attached to one module and can be opened or downloaded.\\
+F04 & AI generation & A source document produces an editable quiz draft.\\
+F05 & Manual quiz & An instructor can create questions and answer options directly.\\
+F06 & Publication & Only a reviewed quiz can be made available to learners.\\
+F07 & Submission & A learner submits a quiz only once.\\
+F08 & Review & The instructor sees the learner, module and answer details.\\
+F09 & Approval & Approval can be granted and later removed.\\
+F10 & Administration & Users, modules and grouped submissions are visible to admins.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Actors and principal use cases}
+\begin{table}[H]\centering
+\caption{Actors and responsibilities}\label{tab:actors}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.20\textwidth}X}
+\toprule Actor & Main responsibilities\\\midrule
+Learner & Consult published material, submit the associated quiz once and follow the approval state.\\
+Instructor & Create and publish modules, author quizzes, review detailed answers and approve or revoke submissions.\\
+Administrator & Manage users, modules and quizzes, and consult grouped operational activity.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Non-functional requirements}
+In addition to functional behavior, the platform must satisfy the following
+quality requirements:
+\begin{itemize}
+\item \textbf{Security:} access is authenticated with JWT and controlled by
+  role-based permissions.
+\item \textbf{Consistency:} module deletion removes dependent quizzes,
+  materials, progress and results in a controlled transaction.
+\item \textbf{Traceability:} learner answers, submission dates and instructor
+  approval decisions are persisted.
+\item \textbf{Maintainability:} controllers, services, repositories and
+  integration clients have separate responsibilities.
+\item \textbf{Usability:} each role can identify its next action quickly on a
+  responsive interface.
+\item \textbf{AI continuity:} manual quiz authoring remains available when the
+  external AI provider is unavailable.
+\item \textbf{Availability:} learning material remains accessible after a quiz
+  has been submitted.
+\end{itemize}
+
+\begin{table}[H]\centering
+\caption{Non-functional requirements and acceptance evidence}
+\label{tab:nonfunctional}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth}X}
+\toprule Requirement & Acceptance evidence\\\midrule
+Security & JWT authentication and role-aware API access.\\
+Consistency & Transactional module and user deletion workflows.\\
+Traceability & Stored answer map, date, learner, quiz and approval state.\\
+Maintainability & Layered services, repositories and specialized integrations.\\
+Usability & Role-specific dashboards and disabled submitted-quiz action.\\
+AI continuity & Manual quiz creation and explicit AI error responses.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Use-case model}
+\img{assets/approved-diagrams/01-usecase-general.png}{Global use-case diagram}
+The use-case model separates responsibilities while keeping the main training
+workflow shared. AI generation is an assistance function, not an automatic
+certification function: generated content must remain editable and subject to
+human review.
+
+\subsection{Module and material scenario}
+The instructor creates a module with a title, description, category and
+priority, then attaches one or more PDF, DOCX or PPTX files. The files remain
+associated with the module and can be opened or downloaded by a learner once
+the module is published. Deleting the module removes its dependent materials.
+
+\subsection{Quiz authoring and publication scenario}
+The instructor chooses either manual authoring or AI generation. In the AI
+case, extracted document text is sent to the provider and the returned draft
+is validated before it is stored. In the manual case, the instructor enters
+questions, options and correct answers directly. In both cases, publication
+is a separate action so that an unreviewed draft is not exposed to learners.
+
+\subsection{Learner submission scenario}
+The learner opens the published module, consults its material and selects one
+option per question. The answer map is stored with persistent question
+identifiers. The first submission creates a result and sets the assessment
+progress to 100 percent; a second submission is rejected and the material
+remains available.
+
+\subsection{Instructor approval scenario}
+The instructor sees a compact submission row containing the learner, module,
+quiz and date. A details action expands the question-by-question answers and
+correct answers. The instructor can approve the result or remove the approval
+after a mistake. Certification is therefore a human decision rather than a
+score-only calculation.
+
+\subsection{Textual description of major use cases}
+\begin{table}[H]\centering
+\caption{Main use-case scenarios}\label{tab:usecase-scenarios}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.24\textwidth}X}
+\toprule Use case & Nominal and alternative scenarios\\\midrule
+Publish module & The instructor creates a module, attaches material and publishes it. If required information is missing or ownership is invalid, publication is rejected.\\
+Generate quiz & The instructor selects material and requests a draft. If extraction or the external API fails, an explicit error is returned and manual authoring remains available.\\
+Submit quiz & The learner answers and submits once. If a result already exists, the second submission is rejected and the material remains accessible.\\
+Review submission & The instructor opens a submission and expands the detailed answers. Approval can be granted or revoked after review.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{User-interface conception}
+The learner dashboard prioritizes published modules, accessible files and quiz
+availability. The instructor dashboard prioritizes creation, publication and
+answer review. The administrator dashboard prioritizes counts, grouped
+submissions and management actions. These role-oriented interface decisions
+are implemented later in Chapter 3; the screenshots there are validation
+evidence rather than requirements analysis.
+
+\section{System architecture}
+\img{assets/approved-diagrams/06-diagramme-composants.png}{Component architecture}
+The Angular client communicates with REST controllers. Controllers delegate to
+services, services coordinate repositories and domain entities, and the
+document extraction and AI clients are isolated behind dedicated components.
+This separation prevents UI concerns from leaking into persistence logic.
+
+\section{Technical conception}
+The technical conception uses a layered REST architecture. The controller
+receives the request, the service applies the business rule, the repository
+persists the entity and the database stores the durable state. The external AI
+API is an integration boundary and is not part of the core database model.
+\img{assets/approved-diagrams/05d-class-services.png}{Entity--repository--service responsibilities}
+
+\section{Design principles and patterns}
+The solution follows a layered architecture and the Single Responsibility
+Principle. Controllers map HTTP requests, services implement business rules,
+repositories perform persistence queries and entities represent the relational
+model. This separation makes the deletion and submission rules testable
+without coupling them to Angular templates.
+
+Document processing follows a strategy-like organization: the extraction
+responsibility is isolated from quiz generation so that PDF, DOCX and PPTX
+support can evolve independently. The quiz lifecycle is treated as a state
+transition problem, separating draft, published and submitted behavior.
+Dependency inversion is applied to the external AI provider through a
+dedicated client boundary, allowing tests to replace the remote service with a
+stub.
+
+\section{Security design}
+JWT authentication is integrated as the application authentication mechanism.
+After a successful login, the server issues a signed token containing the
+identity and role claims. The Angular client attaches the bearer token to API
+requests, while Spring Security validates the signature and protects
+role-specific routes. This design keeps authorization at the API boundary
+rather than relying only on hidden buttons in the interface.
+
+\img{assets/approved-diagrams/04-sequence-auth.png}{Authentication sequence}
+
+\begin{table}[H]\centering
+\caption{Security responsibilities}\label{tab:security}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.25\textwidth}X}
+\toprule Component & Responsibility\\\midrule
+Login service & Verifies credentials and issues a signed JWT.\\
+Angular interceptor & Adds the bearer token to API requests.\\
+Security filter & Validates signature, expiration and claims.\\
+Role mapping & Converts claims into learner, instructor or admin authorities.\\
+Protected controller & Rejects unauthorized or forbidden operations.\\
+Password storage & Stores a one-way password hash, never the clear password.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Data model and integrity}
+The main relationships are User--Course, Course--Material, Course--Quiz,
+Quiz--Question and Learner--QuizResult. A quiz belongs to its module so that
+the module is the lifecycle owner. Deletion is transactional: results,
+progress records, quizzes and materials are removed in a controlled order
+before the module itself is deleted. User deletion removes learner evidence
+and detaches owned resources where required.
+
+\begin{table}[H]\centering
+\caption{Persistent entity dictionary}\label{tab:data-dictionary}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{0.20\textwidth}p{0.28\textwidth}X}
+\toprule Entity & Main fields & Responsibility\\\midrule
+User & id, name, email, role & Learner, instructor and administrator identity.\\
+Course & id, title, status, instructor & Training module and lifecycle owner.\\
+Material & id, file name, course & Uploaded PDF, DOCX or PPTX resource.\\
+Quiz & id, title, course, published & Assessment attached to one module.\\
+Question & id, text, options, correct answer & Question content and grading key.\\
+QuizResult & learner, quiz, answers, approved & Submission evidence and approval state.\\
+Learner progress & learner, course, progress & Course completion tracking.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\img{assets/approved-diagrams/05c-class-quiz-validation.png}{Quiz validation and lifecycle classes}
+
+\section{Quiz lifecycle}
+\img{assets/approved-diagrams/10-sequence-learner-takes-submits-quiz.png}{Learner takes and submits a quiz}
+The lifecycle distinguishes draft, published and submitted states. A learner
+can continue to consult learning material after submission, but the quiz
+action becomes unavailable. The approval state is separate from the score:
+submission means evidence was received, while approval means an instructor has
+reviewed the evidence.
+
+\section{AI design}
+\img{assets/approved-diagrams/02-usecase-detailed-generate-quiz.png}{Detailed AI quiz-generation use case}
+\img{assets/approved-diagrams/03-sequence-generate-quiz.png}{AI quiz-generation sequence}
+The sequence diagram follows the requested analysis notation: the user
+initiates the action through the Angular frontend, the controller reads the
+material from the database, and the controller calls the external API. The
+returned draft is validated and stored as an unpublished quiz. Invalid or
+empty responses are reported explicitly and never bypass instructor
+publication.
+
+\img{assets/approved-diagrams/05a-class-ai.png}{AI client and generation classes}
+\img{assets/approved-diagrams/05b-class-extract.png}{Document extraction classes}
+
+\section*{Conclusion}
+The analysis establishes a traceable relationship between company needs,
+quality requirements, security, persistence and implementation boundaries.
+The next chapter describes how these decisions were realized and validated in
+the backend, frontend, dashboards and API workflows.

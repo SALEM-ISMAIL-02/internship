@@ -1,0 +1,43 @@
+@startuml 09-deployment
+!theme plain
+title Deployment - Current local architecture
+skinparam shadowing false
+
+node "User workstation" as WORKSTATION {
+  artifact "Web browser" as BROWSER
+  node "Angular development server\nlocalhost:4200" as ANGULAR {
+    artifact "Angular SPA\ncompiled dist assets" as SPA
+  }
+}
+
+node "Application host" as HOST {
+  node "JVM / Spring Boot\nlocalhost:8080" as JVM {
+    artifact "E-Learning REST API" as API
+    artifact "JWT security filter\nand stateless sessions" as JWT
+    folder "./uploads" as FILES
+  }
+  database "MySQL localhost:3306\nelearning_db" as DB
+}
+
+cloud "Google Gemini" as GOOGLE {
+  artifact "OpenAI-compatible\n/chat/completions endpoint" as GEMINI
+}
+
+BROWSER --> SPA : HTTP :4200
+SPA --> API : REST / JSON\nCORS + Bearer JWT
+API --> JWT : validates requests
+API --> DB : JDBC / JPA
+API --> FILES : store and read uploaded files
+API --> GEMINI : HTTPS\nconfigured API key
+
+note bottom
+  Configuration source: application.yml
+  server.port = 8080
+  datasource = jdbc:mysql://localhost:3306/elearning_db
+  upload-dir = ./uploads
+  max upload size = 25 MB
+  AI base URL = generativelanguage.googleapis.com/v1beta/openai
+  The repository currently documents the Angular dev server;
+  a production reverse proxy is not part of the Spring Boot code.
+end note
+@enduml

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Safyron Engineering - Learner Catalog &amp; Compliance Portal</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#1c2b3c",
+            "surface-dim": "#051424",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary": "#5a1c00",
+            "on-primary-fixed": "#071d31",
+            "primary-fixed-dim": "#b5c8e4",
+            "tertiary-fixed": "#6ffbbe",
+            "outline": "#8e9197",
+            "primary-container": "#0f2338",
+            "surface-container": "#122131",
+            "inverse-surface": "#d4e4fa",
+            "on-primary-fixed-variant": "#36485f",
+            "tertiary-container": "#002819",
+            "surface-container-lowest": "#010f1f",
+            "on-secondary-fixed": "#370e00",
+            "surface-variant": "#273647",
+            "inverse-primary": "#4d6078",
+            "on-surface-variant": "#c4c6cd",
+            "error": "#ffb4ab",
+            "on-surface": "#d4e4fa",
+            "surface-bright": "#2c3a4c",
+            "on-secondary-fixed-variant": "#7f2b00",
+            "on-background": "#d4e4fa",
+            "secondary": "#ffb599",
+            "surface-container-highest": "#273647",
+            "on-error-container": "#ffdad6",
+            "on-tertiary": "#003824",
+            "surface-container-low": "#0d1c2d",
+            "tertiary": "#4edea3",
+            "secondary-container": "#f66018",
+            "secondary-fixed": "#ffdbce",
+            "surface-tint": "#b5c8e4",
+            "on-primary-container": "#788ba4",
+            "background": "#051424",
+            "surface": "#051424",
+            "outline-variant": "#44474d",
+            "secondary-fixed-dim": "#ffb599",
+            "error-container": "#93000a",
+            "on-primary": "#1f3247",
+            "inverse-on-surface": "#233143",
+            "on-tertiary-container": "#009d6c",
+            "primary": "#b5c8e4",
+            "on-tertiary-fixed-variant": "#005236",
+            "primary-fixed": "#d2e4ff",
+            "on-secondary-container": "#4f1700",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-error": "#690005"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "margin-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "gutter-mobile": "1rem",
+            "space-sm": "0.5rem",
+            "gutter": "1.5rem",
+            "space-xl": "2.5rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["JetBrains Mono"],
+            "headline-md": ["Inter"],
+            "headline-xl-mobile": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-xl": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "headline-sm": ["Inter"],
+            "label-md": ["JetBrains Mono"],
+            "label-lg": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .hazard-stripe {
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(246, 96, 24, 0.12),
+        rgba(246, 96, 24, 0.12) 8px,
+        transparent 8px,
+        transparent 16px
+      );
+    }
+    .technical-grid {
+      background-size: 24px 24px;
+      background-image:
+        linear-gradient(to right, rgba(148, 163, 184, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen technical-grid flex flex-col font-body-md text-body-md select-none">
+<!-- ========================================================================= -->
+<!-- TOP APP BAR (Shared Component JSON Source of Truth)                        -->
+<!-- ========================================================================= -->
+<header class="bg-surface-dim dark:bg-surface-dim border-b border-outline-variant dark:border-outline-variant shadow-sm dark:shadow-none docked full-width top-0 z-50 sticky">
+<div class="flex justify-between items-center w-full px-space-lg h-16">
+<!-- Brand & Left Cluster -->
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-space-sm">
+<img alt="Safyron Engineering Logo" class="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2IQCb0XsuPNRXdDtNQr4SEjPA9ho9zKDFmsw1LbbFag9JDvu5L0aSeossWt0zjq0AzT8iZPk1Y2uIAJCWrsogg0lz7EBLUJS0JEljJIwps_U1UtDsaIfkDl7SETdbBInW6IXZiADsjGf_lltU4y60uEpPfhN4iHt2cqP8bZYkgmcHPwCyGnyRjHYADKK5aV58et9b38p2SP4G4eS31dUlJetircE4mtOw8rjCCaIgkDRYWCstC5oYZgfDLBCxzEbshg"/>
+<div class="h-6 w-px bg-outline-variant ml-2 hidden sm:block"></div>
+<span class="text-label-sm font-label-sm text-on-surface-variant tracking-wider uppercase hidden sm:inline-block">SYS-VER 4.2.1 // LMS-TELEMETRY</span>
+</div>
+<!-- Global Search Bar in TopBar (search_bar: "on_left") -->
+<div class="relative hidden lg:flex items-center">
+<span class="material-symbols-outlined text-outline absolute left-3 pointer-events-none text-body-sm">search</span>
+<input class="bg-surface-container-low text-on-surface text-body-sm font-body-sm pl-9 pr-space-md py-1.5 rounded-lg border border-outline-variant focus:outline-none focus:border-secondary-container w-64 transition-colors" placeholder="Search telemetry or standards..." type="text"/>
+</div>
+</div>
+<!-- Center Navigation Links (JSON: ["Learner", "Instructor", "Admin"]) -->
+<nav class="hidden md:flex items-center gap-space-md h-full">
+<!-- Active link: Learner (current persona context) -->
+<a class="text-secondary dark:text-secondary border-b-2 border-secondary font-label-md text-label-md h-full flex items-center px-space-sm transition-colors duration-150 ease-in-out" href="#learner">
+          Learner
+        </a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-label-md text-label-md hover:text-on-surface h-full flex items-center px-space-sm transition-colors duration-150 ease-in-out" href="#instructor">
+          Instructor
+        </a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-label-md text-label-md hover:text-on-surface h-full flex items-center px-space-sm transition-colors duration-150 ease-in-out" href="#admin">
+          Admin
+        </a>
+</nav>
+<!-- Trailing Action Cluster (Role Switcher + Icons + Profile Avatar) -->
+<div class="flex items-center gap-space-md">
+<!-- Trailing Primary Action: Role Switcher -->
+<div class="flex items-center bg-surface-container-high rounded-lg p-0.5 border border-outline-variant">
+<button class="px-space-sm py-1 rounded bg-secondary-container text-on-secondary font-label-sm text-label-sm uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">badge</span>
+            Role Switcher
+          </button>
+</div>
+<!-- Trailing Icon Actions: notifications, help, settings -->
+<div class="flex items-center gap-1">
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors duration-150" title="Notifications">
+<span class="material-symbols-outlined text-body-lg">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors duration-150" title="Help">
+<span class="material-symbols-outlined text-body-lg">help</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded transition-colors duration-150" title="Settings">
+<span class="material-symbols-outlined text-body-lg">settings</span>
+</button>
+</div>
+<!-- User Profile Avatar & Telemetry Status -->
+<div class="flex items-center gap-space-sm pl-2 border-l border-outline-variant">
+<div class="relative">
+<div class="w-8 h-8 rounded bg-surface-container-highest border border-outline-variant flex items-center justify-center font-label-md text-secondary text-label-sm font-semibold">
+              ST
+            </div>
+<span class="w-2 h-2 rounded-full bg-tertiary absolute -bottom-0.5 -right-0.5 ring-2 ring-surface-dim"></span>
+</div>
+<div class="hidden xl:flex flex-col">
+<span class="text-body-sm font-body-sm text-on-surface leading-none font-semibold">Dr. S. Trabelsi</span>
+<span class="text-label-sm font-label-sm text-tertiary leading-none mt-1">FIELD ENG #9084</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- MAIN WORKSPACE LAYOUT (SIDEBAR + CONTENT CANVAS)                           -->
+<!-- ========================================================================= -->
+<div class="flex flex-1 w-full overflow-hidden">
+<!-- SIDEBAR RAIL EXTENDED (Shared Component JSON Source of Truth) -->
+<aside class="h-[calc(100vh-4rem)] w-64 bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant dark:border-outline-variant flex flex-col justify-between py-space-md shrink-0 sticky top-16 hidden md:flex z-40">
+<!-- Upper Section: Telemetry Header + Primary Tabs -->
+<div class="flex flex-col gap-space-md">
+<!-- Sidebar Telemetry Header -->
+<div class="px-space-md pb-space-sm border-b border-outline-variant">
+<div class="flex items-center gap-space-xs text-primary dark:text-primary text-label-lg font-label-lg uppercase tracking-widest">
+<span class="material-symbols-outlined text-base">sensors</span>
+            TELEMETRY CORE
+          </div>
+<div class="flex items-center justify-between mt-1">
+<span class="text-label-sm font-label-sm text-tertiary">SYS-VER 4.2.1 // ONLINE</span>
+<span class="flex h-1.5 w-1.5 rounded-full bg-tertiary animate-pulse"></span>
+</div>
+</div>
+<!-- Tab Items (Active Item: Course Catalog) -->
+<nav class="flex flex-col space-y-1 px-space-xs">
+<!-- 1. Course Catalog (ACTIVE) -->
+<a class="flex items-center gap-space-sm bg-primary-container dark:bg-primary-container text-secondary dark:text-secondary border-l-2 border-secondary font-label-md text-label-md px-space-md py-space-sm transition-all duration-150 ease-in-out" href="#catalog">
+<span class="material-symbols-outlined text-lg">menu_book</span>
+<span>Course Catalog</span>
+</a>
+<!-- 2. Compliance & Certifications -->
+<a class="flex items-center gap-space-sm text-on-surface-variant dark:text-on-surface-variant font-label-md text-label-md px-space-md py-space-sm hover:text-on-surface hover:bg-surface-container dark:hover:bg-surface-container transition-all duration-150 ease-in-out" href="#certifications">
+<span class="material-symbols-outlined text-lg">verified_user</span>
+<span>Compliance &amp; Certifications</span>
+</a>
+<!-- 3. Assessments -->
+<a class="flex items-center gap-space-sm text-on-surface-variant dark:text-on-surface-variant font-label-md text-label-md px-space-md py-space-sm hover:text-on-surface hover:bg-surface-container dark:hover:bg-surface-container transition-all duration-150 ease-in-out" href="#assessments">
+<span class="material-symbols-outlined text-lg">assignment_turned_in</span>
+<span>Assessments</span>
+</a>
+<!-- 4. Instructor Studio -->
+<a class="flex items-center gap-space-sm text-on-surface-variant dark:text-on-surface-variant font-label-md text-label-md px-space-md py-space-sm hover:text-on-surface hover:bg-surface-container dark:hover:bg-surface-container transition-all duration-150 ease-in-out" href="#instructor-studio">
+<span class="material-symbols-outlined text-lg">school</span>
+<span>Instructor Studio</span>
+</a>
+<!-- 5. Admin Console -->
+<a class="flex items-center gap-space-sm text-on-surface-variant dark:text-on-surface-variant font-label-md text-label-md px-space-md py-space-sm hover:text-on-surface hover:bg-surface-container dark:hover:bg-surface-container transition-all duration-150 ease-in-out" href="#admin-console">
+<span class="material-symbols-outlined text-lg">admin_panel_settings</span>
+<span>Admin Console</span>
+</a>
+</nav>
+<!-- CTA in Sidebar (JSON: cta: "Log Incident") -->
+<div class="px-space-md pt-space-xs">
+<button class="w-full flex items-center justify-center gap-space-xs bg-error-container hover:bg-red-800 text-on-error border border-error/30 py-2 px-space-sm rounded-lg font-label-sm text-label-sm uppercase tracking-wider transition-colors shadow-sm">
+<span class="material-symbols-outlined text-base">warning</span>
+            Log Incident
+          </button>
+</div>
+</div>
+<!-- Lower Section: Regulatory Hub / Footer Tabs -->
+<div class="flex flex-col border-t border-outline-variant pt-space-sm px-space-xs">
+<a class="flex items-center gap-space-sm text-on-surface-variant dark:text-on-surface-variant font-label-md text-label-md px-space-md py-space-sm hover:text-on-surface hover:bg-surface-container transition-all" href="#documentation">
+<span class="material-symbols-outlined text-base">description</span>
+<span>Documentation</span>
+</a>
+<a class="flex items-center gap-space-sm text-on-surface-variant dark:text-on-surface-variant font-label-md text-label-md px-space-md py-space-sm hover:text-on-surface hover:bg-surface-container transition-all" href="#audit-logs">
+<span class="material-symbols-outlined text-base">history</span>
+<span>Audit Logs</span>
+</a>
+<!-- System Node Identifier -->
+<div class="mt-space-md px-space-md py-2 bg-surface-container-lowest border border-outline-variant/60 rounded flex items-center justify-between text-label-sm font-label-sm text-on-primary-container">
+<span>STATION // REF-89</span>
+<span class="text-tertiary">99.98% OK</span>
+</div>
+</div>
+</aside>
+<!-- ======================================================================= -->
+<!-- CONTENT CANVAS                                                          -->
+<!-- ======================================================================= -->
+<main class="flex-1 overflow-y-auto px-4 md:px-8 py-6 space-y-6">
+<!-- ===================================================================== -->
+<!-- HERO: URGENT MANDATORY TRAINING BANNER (OSHA Lockout Directive)       -->
+<!-- ===================================================================== -->
+<section class="relative overflow-hidden bg-primary-container rounded-lg border border-secondary-container/60 shadow-lg">
+<div class="hazard-stripe absolute inset-y-0 left-0 w-3"></div>
+<div class="hazard-stripe absolute -right-12 -top-12 w-48 h-48 rounded-full opacity-30 pointer-events-none"></div>
+<div class="p-6 md:p-8 pl-8 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6">
+<!-- Text & Directive Metadata -->
+<div class="space-y-3 max-w-3xl">
+<div class="flex flex-wrap items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-error-container text-on-error border border-error/50 font-label-sm text-label-sm uppercase tracking-wider font-bold">
+<span class="material-symbols-outlined text-sm font-bold animate-ping">priority_high</span>
+                OSHA MANDATORY DIRECTIVE // #2024-C9
+              </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-surface-container-high text-secondary border border-outline-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                DUE IN 04 DAYS (OCT 15, 2024)
+              </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-low text-tertiary border border-tertiary/40 font-label-sm text-label-sm">
+                CRITICAL RIG AUDIT PASS REQUIREMENT
+              </span>
+</div>
+<div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface tracking-tight">
+                Emergency Fire Protection &amp; High-Hazard Pump Systems
+              </h1>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1.5">
+                Mandatory operational drill covering NFPA 20 pump curve calculations, valve cavitation troubleshooting, and emergency diesel generator switchover protocols for offshore hydrocarbon terminals.
+              </p>
+</div>
+<!-- Segmented Progress Ladder Gauge -->
+<div class="space-y-1.5 pt-1">
+<div class="flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant uppercase">Current Progression: <strong class="text-secondary font-bold">40% COMPLETED</strong> (Step 4 of 10)</span>
+<span class="text-outline">Estimated Remaining: 1h 45m</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-3.5 rounded p-0.5 border border-outline-variant flex gap-1">
+<!-- 10 Segments of 10% each -->
+<div class="flex-1 bg-secondary-container rounded-sm"></div>
+<div class="flex-1 bg-secondary-container rounded-sm"></div>
+<div class="flex-1 bg-secondary-container rounded-sm"></div>
+<div class="flex-1 bg-secondary-container rounded-sm"></div>
+<div class="flex-1 bg-surface-container-high rounded-sm border border-outline-variant/30"></div>
+<div class="flex-1 bg-surface-container-high rounded-sm border border-outline-variant/30"></div>
+<div class="flex-1 bg-surface-container-high rounded-sm border border-outline-variant/30"></div>
+<div class="flex-1 bg-surface-container-high rounded-sm border border-outline-variant/30"></div>
+<div class="flex-1 bg-surface-container-high rounded-sm border border-outline-variant/30"></div>
+<div class="flex-1 bg-surface-container-high rounded-sm border border-outline-variant/30"></div>
+</div>
+</div>
+</div>
+<!-- Action Pod -->
+<div class="flex flex-col sm:flex-row xl:flex-col items-stretch gap-3 w-full sm:w-auto shrink-0">
+<button class="px-6 py-3.5 rounded bg-secondary-container hover:bg-orange-600 text-on-secondary font-label-lg text-label-lg uppercase tracking-wider font-bold shadow-md hover:shadow-orange-900/40 transition-all flex items-center justify-center gap-2 border-t border-orange-300/30">
+<span class="material-symbols-outlined text-lg">play_circle</span>
+              Resume Mandatory Module
+            </button>
+<button class="px-4 py-2.5 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-sm text-label-sm border border-outline-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-base">download</span>
+              Offline Field Packet (.PDF)
+            </button>
+</div>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- METRICS ROW: 4 KEY KPI TELEMETRY CARDS                                -->
+<!-- ===================================================================== -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- KPI 1: Certified Training Hours -->
+<div class="bg-surface-container-low border border-outline-variant/70 rounded-lg p-4 relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span class="uppercase tracking-wider">CERTIFIED LOGGED HOURS</span>
+<span class="material-symbols-outlined text-secondary text-lg">history_edu</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg font-bold text-on-surface font-label-lg">14.5</span>
+<span class="text-body-md font-body-md text-on-surface-variant">/ 20.0 hrs</span>
+</div>
+<div class="mt-2 flex items-center justify-between">
+<div class="w-2/3 bg-surface-container-lowest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[72%]"></div>
+</div>
+<span class="text-label-sm font-label-sm text-tertiary">72.5% Target</span>
+</div>
+</div>
+<!-- KPI 2: Overall Compliance Status -->
+<div class="bg-surface-container-low border border-outline-variant/70 rounded-lg p-4 relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span class="uppercase tracking-wider">COMPLIANCE RATING</span>
+<span class="material-symbols-outlined text-tertiary text-lg">shield</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg font-bold text-tertiary font-label-lg">94.2%</span>
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-tertiary-container text-tertiary border border-tertiary/40">
+              AUDIT PASSED
+            </span>
+</div>
+<div class="mt-2 text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-tertiary">check_circle</span>
+            ISO 45001 / OSHA Subpart S
+          </div>
+</div>
+<!-- KPI 3: Pending Mandates -->
+<div class="bg-surface-container-low border border-secondary-container/40 rounded-lg p-4 relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span class="uppercase tracking-wider">PENDING MANDATES</span>
+<span class="material-symbols-outlined text-secondary-container text-lg">warning</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg font-bold text-secondary-container font-label-lg">01</span>
+<span class="text-label-sm font-label-sm px-2 py-0.5 rounded bg-error-container text-on-error border border-error/30 font-bold uppercase">
+              URGENT ACTION
+            </span>
+</div>
+<div class="mt-2 text-label-sm font-label-sm text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">alarm</span>
+            Oct 15 Deadline Approaching
+          </div>
+</div>
+<!-- KPI 4: Active Enrollments -->
+<div class="bg-surface-container-low border border-outline-variant/70 rounded-lg p-4 relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span class="uppercase tracking-wider">ACTIVE ENROLLMENTS</span>
+<span class="material-symbols-outlined text-primary text-lg">auto_stories</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg font-bold text-on-surface font-label-lg">04</span>
+<span class="text-body-md font-body-md text-on-surface-variant">Courses In-Flight</span>
+</div>
+<div class="mt-2 text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">swap_horiz</span>
+            2 Technical / 2 Regulatory
+          </div>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- FILTER & SEARCH INDUSTRIAL TOOLBAR                                    -->
+<!-- ===================================================================== -->
+<section class="bg-surface-container border border-outline-variant/80 rounded-lg p-4 space-y-4">
+<!-- Search Input Bar & View Toggles -->
+<div class="flex flex-col md:flex-row gap-3 items-stretch justify-between">
+<div class="relative flex-1">
+<span class="material-symbols-outlined text-outline absolute left-3.5 top-3 pointer-events-none text-body-lg">search</span>
+<input class="w-full bg-surface-container-lowest text-on-surface text-body-md font-body-md pl-10 pr-space-md py-2.5 rounded-lg border border-outline-variant focus:outline-none focus:border-secondary-container transition-colors placeholder:text-outline" placeholder="Search technical safety courses, standards (NFPA, ISO, OSHA), or keywords..." type="text"/>
+<button class="absolute right-3 top-2.5 text-label-sm font-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded border border-outline-variant">
+              ⌘K
+            </button>
+</div>
+<div class="flex items-center gap-2 self-end md:self-auto">
+<!-- Sort Menu -->
+<div class="flex items-center gap-1 bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-label-sm font-label-sm text-on-surface">
+<span class="text-outline">SORT:</span>
+<span class="font-bold">MANDATORY FIRST</span>
+<span class="material-symbols-outlined text-sm ml-1">expand_more</span>
+</div>
+<!-- View Layout Toggle -->
+<div class="flex items-center bg-surface-container-low border border-outline-variant rounded-lg p-0.5">
+<button class="p-1.5 rounded bg-surface-container-high text-secondary">
+<span class="material-symbols-outlined text-body-md">grid_view</span>
+</button>
+<button class="p-1.5 rounded text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-body-md">view_list</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Horizontal Category Filter Chips -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 text-label-sm font-label-sm">
+<!-- Active Chip -->
+<button class="px-3 py-1.5 rounded bg-primary-container text-secondary border border-secondary font-bold uppercase shrink-0 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            All Courses (18)
+          </button>
+<button class="px-3 py-1.5 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-outline-variant shrink-0">
+            Industrial Safety &amp; OSHA
+          </button>
+<button class="px-3 py-1.5 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-outline-variant shrink-0">
+            HAZOP &amp; Risk Studies
+          </button>
+<button class="px-3 py-1.5 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-outline-variant shrink-0">
+            Fire Protection &amp; Hydraulics
+          </button>
+<button class="px-3 py-1.5 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-outline-variant shrink-0">
+            ATEX &amp; Hazardous Atmospheres
+          </button>
+<button class="px-3 py-1.5 rounded bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-outline-variant shrink-0">
+            Regulatory Compliance
+          </button>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- COURSE GRID: 3-COLUMN DESKTOP RICH TECHNICAL ENGINEERING CARDS        -->
+<!-- ===================================================================== -->
+<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- CARD 1: Industrial Risk Assessment & HAZOP Methodology -->
+<article class="bg-primary-container border-2 border-secondary-container/80 rounded-lg flex flex-col justify-between overflow-hidden shadow-lg transition-transform hover:-translate-y-1 duration-150">
+<!-- Header Strip -->
+<div class="px-4 py-2 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between text-label-sm font-label-sm text-outline">
+<span>MOD-01 // RISK MANAGEMENT</span>
+<span class="text-secondary font-bold">OSHA 1910.119</span>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<!-- Badge & Title -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error border border-error font-label-sm text-label-sm font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">gavel</span>
+                  MANDATORY
+                </span>
+<span class="text-label-sm font-label-sm text-secondary font-mono">65% DONE</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-semibold hover:text-secondary cursor-pointer transition-colors">
+                Industrial Risk Assessment &amp; HAZOP Methodology
+              </h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2">
+                Systematic examination of planned or existing operations to identify and evaluate safety hazards using quantitative guidewords and deviation matrices.
+              </p>
+</div>
+<!-- Segmented Progress Bar -->
+<div class="space-y-1">
+<div class="w-full bg-surface-container-lowest h-2 rounded p-0.5 border border-outline-variant/60 flex gap-0.5">
+<div class="w-[65%] bg-secondary-container rounded-sm"></div>
+</div>
+</div>
+<!-- Metadata Chips: Docs, Videos, Quiz, Instructor -->
+<div class="pt-2 border-t border-outline-variant/50 space-y-2 text-label-sm font-label-sm text-on-surface-variant">
+<div class="grid grid-cols-3 gap-1 text-center">
+<div class="bg-surface-container-low py-1 rounded border border-outline-variant/40 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">description</span> 3 Docs
+                </div>
+<div class="bg-surface-container-low py-1 rounded border border-outline-variant/40 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">videocam</span> 2 Videos
+                </div>
+<div class="bg-surface-container-low py-1 rounded border border-outline-variant/40 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">quiz</span> 1 Exam
+                </div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="text-outline">LEAD INSTRUCTOR:</span>
+<span class="text-on-surface font-semibold">Dr. Sarah Trabelsi</span>
+</div>
+</div>
+</div>
+<!-- Bottom Action -->
+<div class="p-4 pt-0">
+<button class="w-full py-2.5 rounded bg-secondary-container hover:bg-orange-600 text-on-secondary font-label-md text-label-md uppercase tracking-wider font-bold transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-base">play_arrow</span>
+              Resume HAZOP Exercise
+            </button>
+</div>
+</article>
+<!-- CARD 2: Emergency Fire Protection & Water Reserves -->
+<article class="bg-primary-container border-2 border-secondary-container/80 rounded-lg flex flex-col justify-between overflow-hidden shadow-lg transition-transform hover:-translate-y-1 duration-150">
+<div class="px-4 py-2 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between text-label-sm font-label-sm text-outline">
+<span>MOD-02 // HYDRAULICS</span>
+<span class="text-secondary font-bold">NFPA 25 STANDARD</span>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error border border-error font-label-sm text-label-sm font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">gavel</span>
+                  MANDATORY
+                </span>
+<span class="text-label-sm font-label-sm text-secondary font-mono">40% PROGRESS</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-semibold hover:text-secondary cursor-pointer transition-colors">
+                Emergency Fire Protection &amp; Water Reserves
+              </h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2">
+                Inspection, testing, and maintenance of water-based fire protection systems, diesel fire pump curves, and reserve tank hydraulic static heads.
+              </p>
+</div>
+<!-- Segmented Progress Bar -->
+<div class="space-y-1">
+<div class="w-full bg-surface-container-lowest h-2 rounded p-0.5 border border-outline-variant/60 flex gap-0.5">
+<div class="w-[40%] bg-secondary-container rounded-sm"></div>
+</div>
+</div>
+<!-- Metadata Chips -->
+<div class="pt-2 border-t border-outline-variant/50 space-y-2 text-label-sm font-label-sm text-on-surface-variant">
+<div class="grid grid-cols-2 gap-1 text-center">
+<div class="bg-surface-container-low py-1 rounded border border-outline-variant/40 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">description</span> 4 Technical Guides
+                </div>
+<div class="bg-surface-container-low py-1 rounded border border-outline-variant/40 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">quiz</span> 1 Final Assessment
+                </div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="text-outline">REGULATORY:</span>
+<span class="text-on-surface font-semibold">NFPA 25 CERT #88</span>
+</div>
+</div>
+</div>
+<div class="p-4 pt-0">
+<button class="w-full py-2.5 rounded bg-secondary-container hover:bg-orange-600 text-on-secondary font-label-md text-label-md uppercase tracking-wider font-bold transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-base">play_arrow</span>
+              Continue Pump Inspection
+            </button>
+</div>
+</article>
+<!-- CARD 3: Intro to ATEX & Explosion Risk Zones -->
+<article class="bg-surface-container-low border border-outline-variant/70 rounded-lg flex flex-col justify-between overflow-hidden shadow transition-transform hover:-translate-y-1 duration-150">
+<div class="px-4 py-2 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between text-label-sm font-label-sm text-outline">
+<span>MOD-03 // ATMOSPHERES</span>
+<span class="text-on-surface-variant">ATEX 1999/92/EC</span>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface border border-outline-variant font-label-sm text-label-sm font-medium uppercase tracking-wider">
+                  NORMAL PRIORITY
+                </span>
+<span class="text-label-sm font-label-sm text-primary font-mono">10% PROGRESS</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-semibold hover:text-primary cursor-pointer transition-colors">
+                Intro to ATEX &amp; Explosion Risk Zones
+              </h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2">
+                Classification of Zone 0, 1, and 2 hazardous areas for flammable gases and combustible dusts. Ingress protection and intrinsic safety standards.
+              </p>
+</div>
+<!-- Segmented Progress Bar -->
+<div class="space-y-1">
+<div class="w-full bg-surface-container-lowest h-2 rounded p-0.5 border border-outline-variant/60 flex gap-0.5">
+<div class="w-[10%] bg-primary rounded-sm"></div>
+</div>
+</div>
+<!-- Metadata Chips -->
+<div class="pt-2 border-t border-outline-variant/50 space-y-2 text-label-sm font-label-sm text-on-surface-variant">
+<div class="grid grid-cols-2 gap-1 text-center">
+<div class="bg-surface-container-high py-1 rounded border border-outline-variant/40 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">videocam</span> 6 Modules
+                </div>
+<div class="bg-surface-container-high py-1 rounded border border-outline-variant/40 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">timer</span> 3h 15m
+                </div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="text-outline">PREREQUISITE:</span>
+<span class="text-on-surface font-semibold">General Safety I</span>
+</div>
+</div>
+</div>
+<div class="p-4 pt-0">
+<button class="w-full py-2.5 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md uppercase tracking-wider transition-colors flex items-center justify-center gap-2 border border-outline-variant">
+<span class="material-symbols-outlined text-base">resume</span>
+              Resume Training
+            </button>
+</div>
+</article>
+<!-- CARD 4: Hydraulic Calculation in Sprinkler Networks (COMPLETED) -->
+<article class="bg-surface-container-low border border-tertiary/50 rounded-lg flex flex-col justify-between overflow-hidden shadow transition-transform hover:-translate-y-1 duration-150">
+<div class="px-4 py-2 bg-tertiary-container/40 border-b border-tertiary/30 flex items-center justify-between text-label-sm font-label-sm text-tertiary">
+<span>MOD-04 // CALCULATION</span>
+<span class="font-bold">VERIFIED #90A1-F9</span>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-tertiary-container text-tertiary border border-tertiary font-label-sm text-label-sm font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span>
+                  COMPLETED
+                </span>
+<span class="text-label-sm font-label-sm text-tertiary font-mono">100% AUDITED</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-semibold cursor-pointer">
+                Hydraulic Calculation in Sprinkler Networks
+              </h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2">
+                Hazen-Williams friction loss equations, equivalent pipe lengths for fittings, and hydraulic density criteria for high-density foam warehouses.
+              </p>
+</div>
+<!-- Segmented Progress Bar (100% full green) -->
+<div class="space-y-1">
+<div class="w-full bg-surface-container-lowest h-2 rounded p-0.5 border border-tertiary/40 flex gap-0.5">
+<div class="w-full bg-tertiary rounded-sm"></div>
+</div>
+</div>
+<!-- Metadata Chips -->
+<div class="pt-2 border-t border-outline-variant/50 space-y-2 text-label-sm font-label-sm text-on-surface-variant">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-outline">CREDENTIAL:</span>
+<span class="text-tertiary font-semibold">CEU 2.5 // ACCREDITED</span>
+</div>
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-outline">EXAM SCORE:</span>
+<span class="text-on-surface font-semibold">98.5% (FIRST ATTEMPT)</span>
+</div>
+</div>
+</div>
+<div class="p-4 pt-0">
+<button class="w-full py-2.5 rounded bg-surface-container-high hover:bg-tertiary-container text-tertiary hover:text-on-surface font-label-md text-label-md uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-2 border border-tertiary/40">
+<span class="material-symbols-outlined text-base">download_done</span>
+              Download Certificate (PDF)
+            </button>
+</div>
+</article>
+<!-- CARD 5: Process Safety Management (PSM) Auditing -->
+<article class="bg-surface-container-low border border-outline-variant/70 rounded-lg flex flex-col justify-between overflow-hidden shadow transition-transform hover:-translate-y-1 duration-150">
+<div class="px-4 py-2 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between text-label-sm font-label-sm text-outline">
+<span>MOD-05 // COMPLIANCE</span>
+<span>OSHA 1910.119(O)</span>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant border border-outline-variant font-label-sm text-label-sm font-medium uppercase tracking-wider">
+                  NORMAL PRIORITY
+                </span>
+<span class="text-label-sm font-label-sm text-outline font-mono">0% NOT STARTED</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-semibold hover:text-primary cursor-pointer transition-colors">
+                Process Safety Management (PSM) Auditing
+              </h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2">
+                14-element OSHA compliance audit protocols, mechanical integrity verification, contractor oversight, and incident investigation standard operating procedures.
+              </p>
+</div>
+<!-- Segmented Progress Bar (0%) -->
+<div class="space-y-1">
+<div class="w-full bg-surface-container-lowest h-2 rounded p-0.5 border border-outline-variant/60 flex gap-0.5">
+<div class="w-0 bg-primary rounded-sm"></div>
+</div>
+</div>
+<!-- Metadata Chips -->
+<div class="pt-2 border-t border-outline-variant/50 space-y-2 text-label-sm font-label-sm text-on-surface-variant">
+<div class="grid grid-cols-2 gap-1 text-center">
+<div class="bg-surface-container-high py-1 rounded border border-outline-variant/40 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">timer</span> 4h 30m Duration
+                </div>
+<div class="bg-surface-container-high py-1 rounded border border-outline-variant/40 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">folder</span> 8 Audit Checklists
+                </div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="text-outline">AUDIT CYCLIC:</span>
+<span class="text-on-surface font-semibold">3 Year Mandate</span>
+</div>
+</div>
+</div>
+<div class="p-4 pt-0">
+<button class="w-full py-2.5 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-md text-label-md uppercase tracking-wider transition-colors flex items-center justify-center gap-2 border border-outline-variant">
+<span class="material-symbols-outlined text-base">full_hd</span>
+              Start Coursework
+            </button>
+</div>
+</article>
+<!-- CARD 6: Quantitative Risk Analysis (QRA) in Petrochemical Facilities -->
+<article class="bg-surface-container-low border border-outline-variant/70 rounded-lg flex flex-col justify-between overflow-hidden shadow transition-transform hover:-translate-y-1 duration-150">
+<div class="px-4 py-2 bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between text-label-sm font-label-sm text-outline">
+<span>MOD-06 // ADVANCED</span>
+<span class="text-secondary font-mono">SEVESO III</span>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-secondary-container/20 text-secondary border border-secondary-container/50 font-label-sm text-label-sm font-bold uppercase tracking-wider">
+                  ENROLL AVAILABLE
+                </span>
+<span class="text-label-sm font-label-sm text-secondary font-mono">HIGH HAZARD</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-semibold hover:text-secondary cursor-pointer transition-colors">
+                Quantitative Risk Analysis (QRA) in Petrochemical Facilities
+              </h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant line-clamp-2">
+                Consequence modeling for toxic gas dispersion, BLEVE thermal radiation calculation, FN curves, and Individual Risk per Annum (IRPA) estimation.
+              </p>
+</div>
+<!-- Segmented Progress Bar -->
+<div class="space-y-1">
+<div class="w-full bg-surface-container-lowest h-2 rounded p-0.5 border border-outline-variant/60 flex gap-0.5">
+<div class="w-0 bg-secondary rounded-sm"></div>
+</div>
+</div>
+<!-- Metadata Chips -->
+<div class="pt-2 border-t border-outline-variant/50 space-y-2 text-label-sm font-label-sm text-on-surface-variant">
+<div class="grid grid-cols-2 gap-1 text-center">
+<div class="bg-surface-container-high py-1 rounded border border-outline-variant/40 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">science</span> 12 Case Studies
+                </div>
+<div class="bg-surface-container-high py-1 rounded border border-outline-variant/40 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-xs">speed</span> Advanced Math
+                </div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="text-outline">FACULTY:</span>
+<span class="text-on-surface font-semibold">Safyron Research Dept</span>
+</div>
+</div>
+</div>
+<div class="p-4 pt-0">
+<button class="w-full py-2.5 rounded bg-surface-container hover:bg-surface-container-high text-secondary border border-secondary/40 font-label-md text-label-md uppercase tracking-wider font-semibold transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-base">add_task</span>
+              Request Manager Approval
+            </button>
+</div>
+</article>
+</section>
+<!-- ===================================================================== -->
+<!-- INDUSTRIAL TELEMETRY READOUT MATRIX (Footer Safety Monitor)           -->
+<!-- ===================================================================== -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-5 mt-8 space-y-4">
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-outline-variant pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">analytics</span>
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Active Operational Telemetry &amp; Regulatory Audit Ledger</h3>
+</div>
+<span class="text-label-sm font-label-sm text-outline font-mono">NODE: REG-CENTRAL-01 // AUDIT SYNC: PASS</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-label-sm font-label-sm">
+<div class="p-3 bg-surface-container-low rounded border border-outline-variant/50">
+<div class="text-outline uppercase">Lost Time Injury Rate (LTIR)</div>
+<div class="text-headline-sm font-headline-sm font-bold text-tertiary mt-1">0.00</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">Last 480 Days</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded border border-outline-variant/50">
+<div class="text-outline uppercase">Cert Expiration Window</div>
+<div class="text-headline-sm font-headline-sm font-bold text-secondary-container mt-1">4 Days</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">NFPA 20 Module</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded border border-outline-variant/50">
+<div class="text-outline uppercase">OSHA 300 Log Filing</div>
+<div class="text-headline-sm font-headline-sm font-bold text-tertiary mt-1">LOCKED</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">SHA256 Encrypted</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded border border-outline-variant/50">
+<div class="text-outline uppercase">Simulated Drill Success</div>
+<div class="text-headline-sm font-headline-sm font-bold text-primary mt-1">99.1%</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">42 Field Stations</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

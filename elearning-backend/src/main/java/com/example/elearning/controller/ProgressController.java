@@ -11,6 +11,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashMap;
 
 @RestController
 @RequestMapping("/api/progress")
@@ -19,34 +20,38 @@ public class ProgressController {
 
     private final ProgressService progressService;
 
-    @PutMapping
-    @PreAuthorize("hasRole('LEARNER')")
-    public LearnerProgress update(Principal principal, @RequestBody Map<String, Object> body) {
-        Long courseId = Long.valueOf(body.get("courseId").toString());
-        int progress = Integer.parseInt(body.getOrDefault("progress", 0).toString());
-        // The JWT subject is the email; learnerId is supplied by client as a convenience here.
-        Long learnerId = Long.valueOf(body.get("learnerId").toString());
-        return progressService.updateProgress(learnerId, courseId, progress);
-    }
-
     @GetMapping
-    @PreAuthorize("hasRole('LEARNER')")
     public List<LearnerProgress> myProgress(@RequestParam Long learnerId) {
         return progressService.getProgress(learnerId);
     }
 
     @PostMapping("/quiz/{quizId}/submit")
-    @PreAuthorize("hasRole('LEARNER')")
-    public QuizResult submit(@PathVariable Long quizId, @RequestParam Long learnerId,
-                             @RequestBody Map<String, Object> body) {
-        Map<Long, Integer> answers = new HashMap<>();
-        body.forEach((k, v) -> answers.put(Long.valueOf(k), ((Number) v).intValue()));
-        return progressService.submitQuiz(learnerId, quizId, answers);
+    public Map<String, Object> submit(@PathVariable Long quizId, @RequestParam Long learnerId,
+                                      @RequestBody Map<String, Object> body) {
+        try {
+            Map<Long, Integer> answers = new HashMap<>();
+            body.forEach((k, v) -> answers.put(Long.valueOf(k), ((Number) v).intValue()));
+            QuizResult result = progressService.submitQuiz(learnerId, quizId, answers);
+            return Map.of("id", result.getId(), "date", result.getDate(),
+                    "approved", result.isApproved(), "status", "SUBMITTED");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.CONFLICT, e.getMessage(), e);
+        }
     }
 
     @GetMapping("/results")
-    @PreAuthorize("hasRole('LEARNER')")
-    public List<QuizResult> results(@RequestParam Long learnerId) {
-        return progressService.getResults(learnerId);
+    public List<Map<String, Object>> results(@RequestParam Long learnerId) {
+        return progressService.getResults(learnerId).stream().map(result -> {
+            Map<String, Object> payload = new LinkedHashMap<>();
+            payload.put("id", result.getId());
+            payload.put("date", result.getDate());
+            payload.put("approved", result.isApproved());
+            payload.put("quiz", Map.of(
+                    "id", result.getQuiz().getId(),
+                    "courseId", result.getQuiz().getCourse().getId(),
+                    "courseTitle", result.getQuiz().getCourse().getTitle()));
+            return payload;
+        }).toList();
     }
 }

@@ -1,0 +1,44 @@
+@startuml 07-activity-upload-extract
+!theme plain
+title Activity - Upload a course material and prepare it for extraction
+skinparam shadowing false
+
+start
+:Instructor selects file;
+:POST /api/materials/upload/{courseId}\n(multipart/form-data);
+:MaterialController delegates to MaterialService;
+:Find Course by id;
+if (Course exists?) then (no)
+  :Throw "Course not found";
+  :Request fails;
+  stop
+else (yes)
+endif
+:FileStorageService creates ./uploads\nand copies the file;
+:FileTypeResolver resolves MaterialType;
+:MaterialRepository saves Material\n(course, type, path, originalName);
+:Return Material;
+
+partition "Later: quiz generation reads the material" {
+  :TextExtractorFactory.forType(type);
+  if (PDF, DOCX, or PPTX?) then (yes)
+    :Concrete extractor reads file\n(PDFBox or Apache POI);
+    if (Text is blank?) then (yes)
+      :Generation stops with\n"No extractable text";
+    else (no)
+      :Normalize and truncate source\n(maximum 12,000 characters);
+      :Pass text to quiz generator;
+    endif
+  else (VIDEO or OTHER)
+    :NullTextExtractor returns empty text;
+    :Generation stops as unsupported;
+  endif
+}
+stop
+
+note right
+  Upload itself does not call the extractor.
+  Extraction is performed by AbstractQuizGenerator
+  when the instructor requests quiz generation.
+end note
+@enduml

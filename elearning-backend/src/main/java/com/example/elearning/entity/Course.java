@@ -3,6 +3,8 @@ package com.example.elearning.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "courses")
@@ -26,6 +28,7 @@ public class Course {
     private Status status;
 
     @ManyToOne @JoinColumn(name = "instructor_id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     @JsonIgnore
     private User instructor;
 

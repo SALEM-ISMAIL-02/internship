@@ -1,0 +1,70 @@
+@startuml 05c-class-quiz-validation
+!theme plain
+title Classes - Quiz generation, validation, and lifecycle
+skinparam shadowing false
+
+package "com.example.elearning.quiz" {
+  interface QuizGenerator {
+    + generate(request: QuizGenerationRequest): Quiz
+  }
+  abstract class AbstractQuizGenerator {
+    + generate(request): Quiz
+    # buildPrompt(request, sourceText): String
+    # parseQuestions(raw): List<Question>
+  }
+  class AiQuizGenerator {
+    # buildPrompt(request, sourceText): String
+    # parseQuestions(raw): List<Question>
+  }
+  class QuizGenerationRequest
+  class QuizCloner
+}
+
+package "com.example.elearning.validation" {
+  abstract class QuizValidator {
+    - next: QuizValidator
+    + linkWith(next): QuizValidator
+    + validate(quiz, errors)
+  }
+  class QuestionsPresentValidator
+  class OptionCountValidator
+  class CorrectAnswerIndexValidator
+  class DuplicateStemValidator
+  class MandatoryComplianceValidator
+  class QuizValidationChain {
+    - head: QuizValidator
+    + validateOrThrow(quiz)
+  }
+}
+
+package "com.example.elearning.state" {
+  class QuizLifecycle {
+    + publish(quiz)
+    + unpublish(quiz)
+    + assertTakeable(quiz)
+  }
+}
+
+QuizGenerator <|.. AbstractQuizGenerator
+AbstractQuizGenerator <|-- AiQuizGenerator
+AbstractQuizGenerator ..> QuizGenerationRequest
+AbstractQuizGenerator ..> TextExtractorFactory
+AbstractQuizGenerator ..> AiChatClient
+AbstractQuizGenerator ..> QuizRepository
+QuizValidationChain --> QuizValidator : ordered chain
+QuizValidator <|-- QuestionsPresentValidator
+QuizValidator <|-- OptionCountValidator
+QuizValidator <|-- CorrectAnswerIndexValidator
+QuizValidator <|-- DuplicateStemValidator
+QuizValidator <|-- MandatoryComplianceValidator
+QuizService ..> QuizGenerator
+QuizService ..> QuizValidationChain
+QuizService --> QuizLifecycle
+QuizService --> QuizCloner
+
+note bottom
+  AbstractQuizGenerator is a Template Method.
+  QuizValidator implementations form a Chain of Responsibility.
+  QuizLifecycle enforces published/unpublished/takeable state rules.
+end note
+@enduml
